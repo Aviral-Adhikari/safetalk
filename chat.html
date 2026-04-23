@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Chat | Safetalk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chat.css">
+</head>
+<body class="chat-workspace-body">
+  <main class="chat-page">
+    <section class="chat-shell">
+      <aside class="conversation-sidebar" aria-label="Conversation list">
+        <div class="workspace-brand">
+          <a class="brand" href="index.html">
+            <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
+            <span>Safetalk</span>
+          </a>
+          <a class="workspace-link" href="dashboard.html">Dashboard</a>
+        </div>
+
+        <div class="sidebar-top">
+          <div>
+            <span class="section-label">Messages</span>
+            <h2>Care team</h2>
+          </div>
+          <span class="secure-dot" aria-label="Private conversations">
+            <i class="fa-solid fa-shield-halved"></i>
+          </span>
+        </div>
+
+        <label class="search-box" for="conversation-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="conversation-search" type="search" placeholder="Search psychologists">
+        </label>
+
+        <div class="identity-sidebar-note">
+          <i class="fa-solid fa-user-secret"></i>
+          <span>Anonymous Mode: anon_84GH21</span>
+        </div>
+
+        <div class="conversation-list">
+          <a class="conversation active" href="#">
+            <span class="profile-avatar">AG</span>
+            <span class="presence-dot"></span>
+            <div>
+              <strong>Dr. Asha Gurung</strong>
+              <p>That is completely okay. We can go slowly.</p>
+            </div>
+          </a>
+          <a class="conversation" href="#">
+            <span class="profile-avatar">SS</span>
+            <span class="presence-dot"></span>
+            <div>
+              <strong>Dr. Suman Shrestha</strong>
+              <p>Try the breathing exercise before sleep.</p>
+            </div>
+          </a>
+          <a class="conversation" href="#">
+            <span class="profile-avatar">NK</span>
+            <span class="presence-dot offline"></span>
+            <div>
+              <strong>Dr. Nabin Karki</strong>
+              <p>We can revisit that memory next session.</p>
+            </div>
+          </a>
+          <a class="conversation" href="#">
+            <span class="profile-avatar">PT</span>
+            <span class="presence-dot"></span>
+            <div>
+              <strong>Dr. Priya Thapa</strong>
+              <p>Relationship counseling session confirmed.</p>
+            </div>
+          </a>
+          <a class="conversation" href="#">
+            <span class="profile-avatar">RA</span>
+            <span class="presence-dot offline"></span>
+            <div>
+              <strong>Dr. Ramesh Adhikari</strong>
+              <p>Stress management plan shared.</p>
+            </div>
+          </a>
+          <a class="conversation" href="#">
+            <span class="profile-avatar">SR</span>
+            <span class="presence-dot"></span>
+            <div>
+              <strong>Dr. Sneha Rai</strong>
+              <p>Let me know how today feels.</p>
+            </div>
+          </a>
+          <a class="conversation" href="#">
+            <span class="profile-avatar">BK</span>
+            <span class="presence-dot"></span>
+            <div>
+              <strong>Dr. Bikash Khadka</strong>
+              <p>Trauma recovery resources are ready.</p>
+            </div>
+          </a>
+          <a class="conversation" href="#">
+            <span class="profile-avatar">AL</span>
+            <span class="presence-dot offline"></span>
+            <div>
+              <strong>Dr. Anisha Lama</strong>
+              <p>Next check-in is available tomorrow.</p>
+            </div>
+          </a>
+        </div>
+      </aside>
+
+      <section class="chat-window" aria-label="Chat window">
+        <header class="chat-header">
+          <div class="chat-person">
+            <span class="profile-avatar header-avatar">AG</span>
+            <div>
+              <h1>Dr. Asha Gurung</h1>
+              <div class="status-line">
+                <span class="online-dot"></span>
+                <span>Online now</span>
+                <span class="privacy-label">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  End-to-End Encrypted
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="header-actions" aria-label="Chat actions">
+            <button class="call-button" type="button" aria-label="Start voice call">
+              <i class="fa-solid fa-phone"></i>
+            </button>
+            <button class="call-button video" type="button" aria-label="Start video call">
+              <i class="fa-solid fa-video"></i>
+            </button>
+            <button class="call-button more" type="button" aria-label="More options">
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="chat-context">
+          <span><i class="fa-solid fa-user-secret"></i> Psychologist sees: <strong>Anonymous User</strong></span>
+          <span><i class="fa-solid fa-lock"></i> Your account remains internally verified for safety.</span>
+        </div>
+
+        <div class="messages" aria-label="Chat messages">
+          <div class="day-divider">Today</div>
+
+          <article class="message-group doctor-message">
+            <span class="message-author">Dr. Asha Gurung</span>
+            <div class="message-bubble">
+              Hello Anonymous User. This is a private space. What would feel helpful to talk about today?
+            </div>
+            <span class="timestamp">10:02 AM</span>
+          </article>
+
+          <article class="message-group user-message">
+            <span class="message-author">Anonymous User</span>
+            <div class="message-bubble">
+              I have been feeling overwhelmed, and I wanted to speak anonymously first.
+            </div>
+            <span class="timestamp">10:04 AM</span>
+          </article>
+
+          <article class="message-group doctor-message">
+            <span class="message-author">Dr. Asha Gurung</span>
+            <div class="message-bubble">
+              That is completely okay. I only see your anonymous identity, and we can go at your pace.
+            </div>
+            <span class="timestamp">10:05 AM</span>
+          </article>
+
+          <article class="message-group user-message">
+            <span class="message-author">Anonymous User</span>
+            <div class="message-bubble">
+              Can we switch to a voice call if typing becomes hard?
+            </div>
+            <span class="timestamp">10:07 AM</span>
+          </article>
+
+          <article class="message-group doctor-message">
+            <span class="message-author">Dr. Asha Gurung</span>
+            <div class="message-bubble">
+              Yes. You can start with chat, voice call, or video call whenever you feel ready.
+            </div>
+            <span class="timestamp">10:08 AM</span>
+          </article>
+        </div>
+
+        <form class="chat-input" aria-label="Message input">
+          <button class="utility-button" type="button" aria-label="Attach file">
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+          <input type="text" placeholder="Message Dr. Asha Gurung as Anonymous User">
+          <button class="send-button" type="submit" aria-label="Send message">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </section>
+
+      <aside class="profile-panel" aria-label="Psychologist information">
+        <div class="profile-summary-card">
+          <span class="profile-avatar profile-panel-avatar">AG</span>
+          <h2>Dr. Asha Gurung</h2>
+          <p>Depression counseling</p>
+          <span class="availability-pill"><i class="fa-solid fa-circle"></i> Online now</span>
+        </div>
+
+        <div class="info-card">
+          <h3>Experience</h3>
+          <p>8 years supporting clients through depression, burnout, anxiety, and life transitions.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Short bio</h3>
+          <p>Warm, structured, and privacy-centered counseling for people who want support at their own pace.</p>
+        </div>
+
+        <div class="quick-actions-card">
+          <h3>Quick actions</h3>
+          <button class="panel-action" type="button">
+            <i class="fa-solid fa-video"></i>
+            Start video call
+          </button>
+          <button class="panel-action" type="button">
+            <i class="fa-solid fa-phone"></i>
+            Start voice call
+          </button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="video-call-layer is-hidden" aria-label="Video call interface">
+      <div class="video-call-card">
+        <div class="call-topbar">
+          <span><i class="fa-solid fa-shield-halved"></i> Encrypted video session</span>
+          <strong>Dr. Asha Gurung</strong>
+        </div>
+
+        <div class="remote-video">
+          <span class="profile-avatar video-avatar">AG</span>
+          <div>
+            <h2>Dr. Asha Gurung</h2>
+            <p>Waiting for encrypted video stream</p>
+          </div>
+        </div>
+
+        <div class="local-video">
+          <span class="profile-avatar">AU</span>
+          <p>You</p>
+        </div>
+
+        <div class="call-control-bar">
+          <button type="button" class="round-control" aria-label="Mute microphone">
+            <i class="fa-solid fa-microphone"></i>
+          </button>
+          <button type="button" class="round-control" aria-label="Toggle camera">
+            <i class="fa-solid fa-camera"></i>
+          </button>
+          <button type="button" class="round-control end-call" aria-label="End call">
+            <i class="fa-solid fa-phone-slash"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="voice-call-layer is-hidden" aria-label="Voice call interface">
+      <div class="voice-call-card">
+        <span class="profile-avatar voice-avatar">AG</span>
+        <h2>Dr. Asha Gurung</h2>
+        <span class="call-timer">00:42</span>
+        <p>Encrypted voice call active</p>
+
+        <div class="voice-wave" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="call-control-bar">
+          <button type="button" class="round-control" aria-label="Mute microphone">
+            <i class="fa-solid fa-microphone"></i>
+          </button>
+          <button type="button" class="round-control end-call" aria-label="End call">
+            <i class="fa-solid fa-phone-slash"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

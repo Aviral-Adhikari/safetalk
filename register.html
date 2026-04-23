@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | Safetalk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html" aria-label="Safetalk home">
+        <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
+        <span>Safetalk</span>
+      </a>
+      <div class="nav-links" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="psychologists.html">Psychologists</a>
+        <a href="index.html#how-it-works">How it Works</a>
+        <a href="about.html">About</a>
+      </div>
+      <div class="nav-actions">
+        <a class="login-link" href="login.html">Login</a>
+        <a class="btn btn-primary btn-small" href="register.html">Create Account</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="auth-page">
+    <section class="auth-shell container">
+      <div class="auth-copy">
+        <span class="section-label">Create your secure account</span>
+        <h1>Safety first, privacy still in your control.</h1>
+        <p>
+          Your account helps Safetalk protect the platform. Psychologists only see
+          your real name if you choose Known Mode after signing in.
+        </p>
+      </div>
+
+      <form class="auth-card" action="identity-mode.html">
+        <div class="form-header">
+          <i class="fa-solid fa-user-plus"></i>
+          <div>
+            <h2>Create account</h2>
+            <p>Choose anonymous or known mode after registration.</p>
+          </div>
+        </div>
+
+        <label for="full-name">Full name</label>
+        <div class="input-group">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="full-name" placeholder="Aarav Koirala">
+        </div>
+
+        <label for="register-email">Email address</label>
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="register-email" placeholder="you@example.com">
+        </div>
+
+        <label for="register-password">Password</label>
+        <div class="input-group">
+          <i class="fa-solid fa-key"></i>
+          <input type="password" id="register-password" placeholder="Create a secure password">
+        </div>
+
+        <button class="btn btn-primary" type="submit">Create Account and Choose Mode</button>
+        <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <a class="brand footer-brand" href="index.html">
+        <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
+        <span>Safetalk</span>
+      </a>
+      <div class="footer-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms of Service</a>
+        <a href="about.html">Contact</a>
+      </div>
+      <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

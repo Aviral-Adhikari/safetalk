@@ -1,0 +1,81 @@
+.anonymous-page {
+  min-height: calc(100vh - 150px);
+  display: grid;
+  align-items: center;
+  padding: 88px 0;
+  background: var(--color-background);
+}
+
+.anonymous-card {
+  max-width: 900px;
+  padding: 58px;
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.anonymous-card .privacy-icon {
+  margin: 0 auto 24px;
+}
+
+.anonymous-card h1 {
+  max-width: 760px;
+  margin: 14px auto 0;
+  font-size: clamp(2.5rem, 5vw, 4.9rem);
+}
+
+.anonymous-card p {
+  max-width: 690px;
+  margin: 24px auto 0;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.anonymous-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.assurance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.assurance-grid span {
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.assurance-grid i {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+  border-radius: 8px;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+@media (max-width: 780px) {
+  .anonymous-card {
+    padding: 34px 22px;
+  }
+
+  .anonymous-actions,
+  .assurance-grid {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+}

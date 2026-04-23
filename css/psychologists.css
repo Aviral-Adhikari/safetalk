@@ -1,0 +1,169 @@
+.page-hero,
+.profile-page {
+  background: var(--color-background);
+}
+
+.page-hero-inner {
+  padding: 92px 0 52px;
+  text-align: center;
+}
+
+.page-hero h1 {
+  max-width: 860px;
+  margin: 14px auto 0;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+}
+
+.page-hero p {
+  max-width: 680px;
+  margin: 22px auto 0;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.directory-section {
+  padding: 34px 0 104px;
+}
+
+.psychologist-directory {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.directory-card,
+.profile-card-large,
+.profile-detail {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.directory-card {
+  padding: 28px;
+  transition: all 0.3s ease;
+}
+
+.directory-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.card-actions .btn {
+  width: 100%;
+  margin-top: 0;
+  padding: 0 14px;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 32px;
+  padding: 92px 0;
+}
+
+.profile-card-large,
+.profile-detail {
+  padding: 34px;
+}
+
+.profile-card-large {
+  position: sticky;
+  top: 106px;
+  align-self: start;
+  text-align: center;
+}
+
+.profile-avatar-large {
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 24px;
+  font-size: 2rem;
+}
+
+.profile-card-large h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.profile-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.profile-detail h2 {
+  margin-top: 12px;
+}
+
+.profile-detail p {
+  margin-top: 22px;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.expertise-grid div {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.expertise-grid i {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--color-icon-bg);
+  color: var(--color-primary);
+}
+
+@media (max-width: 1000px) {
+  .psychologist-directory,
+  .profile-layout {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .profile-card-large,
+  .profile-detail {
+    grid-column: 1 / -1;
+  }
+
+  .profile-card-large {
+    position: static;
+  }
+}
+
+@media (max-width: 680px) {
+  .psychologist-directory,
+  .card-actions,
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-hero-inner,
+  .profile-layout {
+    padding: 64px 0;
+  }
+}

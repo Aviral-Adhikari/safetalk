@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Safetalk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>Safetalk</span></a>
+      <div class="nav-links"><a href="index.html">Home</a><a href="psychologists.html">Psychologists</a><a href="index.html#how-it-works">How it Works</a><a href="about.html">About</a></div>
+      <div class="nav-actions"><a class="login-link" href="identity-mode.html">Switch Mode</a><a class="btn btn-primary btn-small" href="psychologists.html">Find Psychologist</a></div>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="container dashboard-header">
+      <span class="section-label">Step 3: Dashboard</span>
+      <h1>Welcome back, Aarav.</h1>
+      <p>Your account is active internally. Your current session mode controls what psychologists see.</p>
+    </section>
+
+    <section class="container identity-status-card">
+      <div class="status-icon"><i class="fa-solid fa-mask"></i></div>
+      <div>
+        <span class="section-label">Current identity mode</span>
+        <h2>Anonymous Mode</h2>
+        <p>Generated account alias: <strong>anon_84GH21</strong>. Psychologists see: <strong>Anonymous User</strong>.</p>
+      </div>
+      <a class="btn btn-secondary" href="identity-mode.html">Change Mode</a>
+    </section>
+
+    <section class="container dashboard-grid">
+      <div class="dashboard-panel recent-chats">
+        <h2>Recent chats</h2>
+        <a class="chat-row" href="chat.html"><span class="profile-avatar">AG</span><div><strong>Dr. Asha Gurung</strong><p>Depression counseling. Visible as Anonymous User.</p></div></a>
+        <a class="chat-row" href="chat.html"><span class="profile-avatar">SS</span><div><strong>Dr. Suman Shrestha</strong><p>Anxiety therapy. Last message 12 min ago.</p></div></a>
+      </div>
+
+      <div class="dashboard-panel quick-actions">
+        <h2>Quick actions</h2>
+        <a class="action-tile" href="identity-mode.html"><i class="fa-solid fa-id-card"></i><span>Choose identity mode</span></a>
+        <a class="action-tile" href="psychologists.html"><i class="fa-solid fa-user-doctor"></i><span>Find psychologist</span></a>
+        <a class="action-tile" href="chat.html"><i class="fa-solid fa-message"></i><span>Open secure chat</span></a>
+      </div>
+
+      <div class="dashboard-panel recommended">
+        <h2>Recommended psychologists</h2>
+        <div class="mini-card"><span class="profile-avatar">PT</span><div><strong>Dr. Priya Thapa</strong><p>Relationship counseling</p></div><a href="psychologist-profile.html">View</a></div>
+        <div class="mini-card"><span class="profile-avatar">BK</span><div><strong>Dr. Bikash Khadka</strong><p>Trauma recovery</p></div><a href="psychologist-profile.html">View</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <a class="brand footer-brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>Safetalk</span></a>
+      <div class="footer-links"><a href="about.html">Privacy Policy</a><a href="about.html">Terms of Service</a><a href="about.html">Contact</a></div>
+      <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

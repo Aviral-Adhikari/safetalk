@@ -1,0 +1,919 @@
+:root {
+  --color-primary: #5B6EF5;
+  --color-primary-hover: #4B5DE0;
+  --color-secondary: #8B7CF6;
+  --color-accent: #2EC4B6;
+  --color-background: #F4F6FB;
+  --color-surface: #FFFFFF;
+  --color-sidebar: #EEF2FF;
+  --color-border: #E3E7F3;
+  --color-text-primary: #1F2937;
+  --color-text-secondary: #6B7280;
+  --color-icon-bg: #F1F5FF;
+  --color-icon-bg-hover: #E4E9FF;
+  --color-surface-hover: #FAFBFF;
+  --color-border-strong: #CBD3EA;
+  --color-white: #FFFFFF;
+  --color-success-bg: #EAFBF9;
+  --color-success-text: #0F766E;
+  --color-warning: #F59E0B;
+  --color-step-muted: #D8DDFB;
+  --color-secondary-bg: #F0EFFF;
+  --color-chat-doctor: #F1F5F9;
+  --color-muted-dot: #AAB3C5;
+  --color-call-bg: #111827;
+  --color-call-surface: #1F2937;
+  --color-danger: #EF4444;
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 14px 36px rgba(31, 41, 55, 0.08);
+  --shadow-lg: 0 24px 60px rgba(31, 41, 55, 0.12);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+
+  --primary: var(--color-primary);
+  --secondary: var(--color-secondary);
+  --accent: var(--color-accent);
+  --background: var(--color-background);
+  --surface: var(--color-surface);
+  --text: var(--color-text-primary);
+  --muted: var(--color-text-secondary);
+  --border: var(--color-border);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  width: min(1160px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(16px);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  width: min(1220px, calc(100% - 40px));
+  min-height: 78px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 10px 24px rgba(91, 110, 245, 0.24);
+}
+
+.nav-links,
+.nav-actions,
+.hero-actions,
+.footer-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  gap: 34px;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.nav-links a,
+.login-link,
+.footer-links a {
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover,
+.login-link:hover,
+.footer-links a:hover {
+  color: var(--color-primary);
+}
+
+.nav-actions {
+  gap: 18px;
+}
+
+.login-link {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 10px 24px rgba(91, 110, 245, 0.24);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 14px 30px rgba(91, 110, 245, 0.28);
+}
+
+.btn-secondary {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+}
+
+.btn-light {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-small {
+  min-height: 42px;
+  padding: 0 18px;
+  font-size: 0.9rem;
+}
+
+.btn-large {
+  min-height: 56px;
+  padding: 0 28px;
+}
+
+.btn-card {
+  width: 100%;
+  margin-top: 24px;
+  background: var(--color-icon-bg);
+  color: var(--color-primary);
+}
+
+.btn-card:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 10px 24px rgba(91, 110, 245, 0.24);
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 780px;
+  overflow: hidden;
+  background: var(--color-background);
+}
+
+.hero::before {
+  position: absolute;
+  inset: 120px auto auto 50%;
+  z-index: -2;
+  width: min(920px, 92vw);
+  height: min(920px, 92vw);
+  border-radius: 50%;
+  background: rgba(91, 110, 245, 0.08);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.hero-glow {
+  position: absolute;
+  z-index: -1;
+  border-radius: 999px;
+  opacity: 0.38;
+}
+
+.glow-one {
+  width: 220px;
+  height: 220px;
+  left: 5%;
+  top: 22%;
+  background: var(--color-accent);
+}
+
+.glow-two {
+  width: 260px;
+  height: 260px;
+  right: 4%;
+  bottom: 18%;
+  background: var(--color-secondary);
+}
+
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 112px 0 86px;
+  text-align: center;
+}
+
+.hero-badge,
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-badge {
+  padding: 9px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-text-primary);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+h1 {
+  max-width: 900px;
+  margin-top: 24px;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 600;
+}
+
+h2 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 1.18rem;
+  font-weight: 600;
+}
+
+.hero-text {
+  max-width: 720px;
+  margin: 24px auto 34px;
+  color: var(--color-text-secondary);
+  font-size: 1.06rem;
+}
+
+.hero-actions {
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 58px;
+}
+
+.hero-panel {
+  position: relative;
+  width: min(820px, 100%);
+  min-height: 300px;
+  border: 1px solid var(--color-border);
+  border-radius: 32px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.session-card,
+.stat-pill {
+  position: absolute;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.session-card {
+  border-radius: 20px;
+  text-align: left;
+}
+
+.session-main {
+  top: 52px;
+  left: 50%;
+  width: min(440px, calc(100% - 44px));
+  padding: 24px;
+  transform: translateX(-50%);
+}
+
+.session-header,
+.psychologist-mini,
+.profile-top,
+.benefit-item {
+  display: flex;
+  align-items: center;
+}
+
+.session-header {
+  gap: 14px;
+}
+
+.session-header p,
+.psychologist-mini p,
+.section-copy p,
+.benefit-item p,
+.trust-card p,
+.step-card p,
+.privacy-card p,
+.cta-card p,
+.specialization,
+.experience,
+.copyright {
+  color: var(--color-text-secondary);
+}
+
+.avatar,
+.profile-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--color-icon-bg);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+}
+
+.anonymous {
+  background: var(--color-icon-bg);
+  color: var(--color-primary);
+}
+
+.doctor {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.message-row {
+  display: grid;
+  gap: 10px;
+  margin: 26px 0;
+}
+
+.message-row span {
+  display: block;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-border);
+}
+
+.message-row span:last-child {
+  width: 72%;
+}
+
+.secure-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.psychologist-mini {
+  right: 42px;
+  bottom: 46px;
+  gap: 12px;
+  width: min(280px, calc(100% - 60px));
+  padding: 16px;
+  border-radius: 18px;
+}
+
+.stat-pill {
+  left: 40px;
+  bottom: 64px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  border-radius: 999px;
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.stat-pill i {
+  color: var(--color-warning);
+}
+
+.trust-section {
+  margin-top: -44px;
+  position: relative;
+  z-index: 3;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.trust-card,
+.step-card,
+.psychologist-card {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.trust-card {
+  min-height: 228px;
+  padding: 28px;
+  border-radius: var(--radius-md);
+}
+
+.trust-card:hover,
+.step-card:hover,
+.psychologist-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.trust-card i,
+.benefit-item i,
+.step-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  background: var(--color-icon-bg);
+  color: var(--color-primary);
+}
+
+.trust-card h3,
+.benefit-item h3,
+.step-card h3,
+.psychologist-card h3 {
+  margin-bottom: 10px;
+}
+
+.section-space {
+  padding: 112px 0;
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.section-copy p {
+  margin-top: 24px;
+  max-width: 590px;
+  font-size: 1rem;
+}
+
+.benefit-list {
+  display: grid;
+  gap: 18px;
+}
+
+.benefit-item {
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.benefit-item i {
+  margin-bottom: 0;
+}
+
+.how-section,
+.privacy-section {
+  background: var(--color-surface);
+}
+
+.section-heading {
+  max-width: 760px;
+  margin-bottom: 42px;
+}
+
+.section-heading h2,
+.section-copy h2,
+.privacy-card h2 {
+  margin-top: 12px;
+}
+
+.centered {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.steps,
+.psychologist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.step-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 292px;
+  padding: 32px;
+  border-radius: var(--radius-lg);
+}
+
+.step-number {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  color: var(--color-step-muted);
+  font-size: 3.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.step-icon {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 34px;
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.psychologists-section {
+  background: var(--color-background);
+}
+
+.psychologist-card {
+  padding: 28px;
+  border-radius: var(--radius-lg);
+}
+
+.featured-card {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+}
+
+.profile-top {
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  font-size: 1.15rem;
+}
+
+.availability {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.experience {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.privacy-card {
+  display: grid;
+  grid-template-columns: auto 1fr 0.72fr;
+  gap: 32px;
+  align-items: center;
+  padding: 42px;
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.privacy-icon {
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 86px;
+  border-radius: 20px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 2rem;
+}
+
+.privacy-points {
+  display: grid;
+  gap: 12px;
+}
+
+.privacy-points span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.privacy-points i {
+  color: var(--color-accent);
+}
+
+.cta-section {
+  padding: 108px 0;
+}
+
+.cta-card {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 40px;
+  border-radius: 30px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.cta-card::before,
+.cta-card::after {
+  display: none;
+}
+
+.cta-card .section-label,
+.cta-card h2,
+.cta-card p,
+.cta-card .btn {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-card .section-label,
+.cta-card h2 {
+  color: var(--color-white);
+}
+
+.cta-card h2 {
+  max-width: 760px;
+  margin: 14px auto 0;
+}
+
+.cta-card p {
+  max-width: 590px;
+  margin: 18px auto 30px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1rem;
+}
+
+.footer {
+  padding: 36px 0;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: center;
+}
+
+.footer-links {
+  justify-content: center;
+  gap: 24px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.copyright {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1060px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 14px 0;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .split-layout,
+  .privacy-card {
+    grid-template-columns: 1fr;
+  }
+
+  .steps,
+  .psychologist-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .container,
+  .navbar {
+    width: min(100% - 28px, 1160px);
+  }
+
+  .navbar {
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+    gap: 16px 20px;
+  }
+
+  .nav-actions,
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .login-link {
+    text-align: center;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-inner {
+    padding: 74px 0 64px;
+  }
+
+  .hero-actions {
+    margin-bottom: 40px;
+  }
+
+  .hero-panel {
+    min-height: 390px;
+    border-radius: 24px;
+  }
+
+  .session-main {
+    top: 32px;
+  }
+
+  .psychologist-mini,
+  .stat-pill {
+    left: 22px;
+    right: 22px;
+    width: auto;
+  }
+
+  .psychologist-mini {
+    bottom: 32px;
+  }
+
+  .stat-pill {
+    bottom: 118px;
+    justify-content: center;
+  }
+
+  .trust-section {
+    margin-top: 0;
+    padding-top: 24px;
+  }
+
+  .trust-grid,
+  .steps,
+  .psychologist-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-space {
+    padding: 76px 0;
+  }
+
+  .split-layout {
+    gap: 36px;
+  }
+
+  .privacy-card,
+  .cta-card {
+    padding: 32px 22px;
+    border-radius: 22px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-brand,
+  .footer-links {
+    justify-content: center;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand {
+    font-size: 1.12rem;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-badge {
+    align-items: flex-start;
+    border-radius: 18px;
+    text-align: left;
+  }
+
+  h1 {
+    font-size: 2.65rem;
+  }
+
+  .trust-card,
+  .step-card,
+  .psychologist-card {
+    padding: 24px;
+  }
+
+  .benefit-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

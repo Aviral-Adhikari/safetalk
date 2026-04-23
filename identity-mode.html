@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Identity Mode | Safetalk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/identity.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html" aria-label="Safetalk home">
+        <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
+        <span>Safetalk</span>
+      </a>
+      <div class="nav-links" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="psychologists.html">Psychologists</a>
+        <a href="index.html#how-it-works">How it Works</a>
+        <a href="about.html">About</a>
+      </div>
+      <div class="nav-actions">
+        <a class="login-link" href="dashboard.html">Dashboard</a>
+        <a class="btn btn-primary btn-small" href="identity-mode.html">Identity Mode</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="identity-page">
+    <section class="container identity-header">
+      <span class="section-label">Step 2: Choose how you appear</span>
+      <h1>Select your session identity.</h1>
+      <p>
+        Safetalk keeps your account internally for safety. This choice controls
+        what psychologists see inside counseling sessions.
+      </p>
+    </section>
+
+    <section class="container identity-grid">
+      <article class="identity-card anonymous-choice">
+        <div class="identity-icon"><i class="fa-solid fa-mask"></i></div>
+        <span class="mode-label">Generated ID: anon_84GH21</span>
+        <h2>Continue Anonymously</h2>
+        <p>Talk to psychologists without revealing your identity. Psychologists will see you as Anonymous User.</p>
+        <a class="btn btn-primary btn-large" href="dashboard.html">Start Anonymous Session</a>
+      </article>
+
+      <article class="identity-card known-choice">
+        <div class="identity-icon"><i class="fa-solid fa-user-check"></i></div>
+        <span class="mode-label">Visible name: Aarav Koirala</span>
+        <h2>Continue With Identity</h2>
+        <p>Your name will be visible to psychologists. Use this mode when you want your provider to know who you are.</p>
+        <a class="btn btn-secondary btn-large" href="dashboard.html">Continue With Identity</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <a class="brand footer-brand" href="index.html">
+        <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
+        <span>Safetalk</span>
+      </a>
+      <div class="footer-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms of Service</a>
+        <a href="about.html">Contact</a>
+      </div>
+      <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
