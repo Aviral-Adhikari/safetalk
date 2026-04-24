@@ -9,16 +9,20 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# =========================
 # SECURITY
+# =========================
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
 
+# =========================
 # APPLICATIONS
+# =========================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,8 +31,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'users',
+    'psychologists',
+    'chat',
+    'anonymous_sessions',
 ]
 
+
+# =========================
+# MIDDLEWARE
+# =========================
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -41,8 +54,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'safetalk.urls'
 
+
+# =========================
+# TEMPLATES
+# =========================
 
 TEMPLATES = [
     {
@@ -60,19 +78,36 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'safetalk.wsgi.application'
+# =========================
+# ASGI / WSGI
+# =========================
+
+#ASGI_APPLICATION = 'safetalk.asgi.application'
+ASGI_APPLICATION = 'safetalk.asgi.application'
 
 
-# DATABASE (Render PostgreSQL)
+# =========================
+# DATABASE
+# =========================
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL")
-    )
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL)
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
+# =========================
 # PASSWORD VALIDATION
+# =========================
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -90,7 +125,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# =========================
 # INTERNATIONALIZATION
+# =========================
 
 LANGUAGE_CODE = 'en-us'
 
@@ -101,12 +138,18 @@ USE_I18N = True
 USE_TZ = True
 
 
+# =========================
 # STATIC FILES
+# =========================
+
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
+# =========================
 # DEFAULT PRIMARY KEY
+# =========================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
