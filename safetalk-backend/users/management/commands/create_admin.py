@@ -1,17 +1,11 @@
-import os
-
 from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = "Create or reset the Safetalk admin superuser from ADMIN_PASSWORD."
+    help = "Create or reset the Safetalk admin superuser."
 
     def handle(self, *args, **options):
-        password = os.environ.get("ADMIN_PASSWORD")
-        if not password:
-            raise CommandError("ADMIN_PASSWORD environment variable is required.")
-
         User = get_user_model()
         defaults = {
             "email": "aviral.adhikari05@gmail.com",
@@ -21,7 +15,7 @@ class Command(BaseCommand):
         }
 
         user, created = User.objects.get_or_create(
-            username="admin",
+            username="aviral",
             defaults=defaults,
         )
 
@@ -31,12 +25,12 @@ class Command(BaseCommand):
             user.is_superuser = True
             user.is_active = True
 
-        user.set_password(password)
+        user.set_password("123@Pass@")
         user.save()
 
         action = "created" if created else "updated"
         self.stdout.write(
             self.style.SUCCESS(
-                f"Admin user {action} successfully for username='admin'."
+                f"Admin user {action} successfully for username='aviral'."
             )
         )
