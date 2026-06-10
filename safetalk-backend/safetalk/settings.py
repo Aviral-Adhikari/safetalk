@@ -3,10 +3,12 @@ Django settings for safetalk project.
 """
 
 from pathlib import Path
+import importlib.util
 import os
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+WHITE_NOISE_AVAILABLE = importlib.util.find_spec("whitenoise") is not None
 
 
 # =========================
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     'anonymous_sessions',
 ]
 
+AUTH_USER_MODEL = "users.User"
+
 
 # =========================
 # MIDDLEWARE
@@ -45,7 +49,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+]
+
+if WHITE_NOISE_AVAILABLE:
+    MIDDLEWARE.append('whitenoise.middleware.WhiteNoiseMiddleware')
+
+MIDDLEWARE += [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -145,7 +154,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+if WHITE_NOISE_AVAILABLE:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # =========================
