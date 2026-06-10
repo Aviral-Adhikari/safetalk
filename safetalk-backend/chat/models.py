@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from anonymous_sessions.models import AnonymousSession
 
@@ -43,3 +45,9 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.message_type} message in room {self.room_id} by {self.sender}"
+
+
+@receiver(post_save, sender=AnonymousSession)
+def ensure_chat_room_exists(sender, instance, created, **kwargs):
+    if created:
+        ChatRoom.objects.get_or_create(session=instance)
