@@ -21,6 +21,7 @@ from .views import home
 urlpatterns = [
     path('', home),
     path('admin/', admin.site.urls),
+    path('api/auth/', include('users.urls')),
     path('api/psychologists/', include('psychologists.urls')),
     path('api/anonymous-sessions/', include('anonymous_sessions.urls')),
     path('api/chat/', include('chat.urls')),
