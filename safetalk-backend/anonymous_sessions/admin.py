@@ -6,6 +6,7 @@ from .models import AnonymousSession
 @admin.register(AnonymousSession)
 class AnonymousSessionAdmin(admin.ModelAdmin):
     list_display = (
+        "identity_mode",
         "anonymous_alias",
         "psychologist",
         "status",
@@ -13,6 +14,7 @@ class AnonymousSessionAdmin(admin.ModelAdmin):
         "updated_at",
     )
     list_filter = (
+        "identity_mode",
         "status",
         "created_at",
         "updated_at",

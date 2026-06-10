@@ -8,6 +8,10 @@ from psychologists.models import PsychologistProfile
 
 
 class AnonymousSession(models.Model):
+    class IdentityMode(models.TextChoices):
+        ANONYMOUS = "anonymous", "Anonymous"
+        KNOWN = "known", "Known"
+
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
         ACTIVE = "active", "Active"
@@ -34,6 +38,11 @@ class AnonymousSession(models.Model):
         editable=False
     )
 
+    identity_mode = models.CharField(
+        max_length=20,
+        choices=IdentityMode.choices,
+        default=IdentityMode.ANONYMOUS,
+    )
     anonymous_alias = models.CharField(
         max_length=32,
         unique=True,
@@ -50,11 +59,14 @@ class AnonymousSession(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.anonymous_alias} -> {self.psychologist}"
+        display_identity = self.anonymous_alias or "known-client"
+        return f"{display_identity} -> {self.psychologist}"
 
     def save(self, *args, **kwargs):
-        if not self.anonymous_alias:
+        if self.identity_mode == self.IdentityMode.ANONYMOUS and not self.anonymous_alias:
             self.anonymous_alias = self.generate_alias()
+        elif self.identity_mode == self.IdentityMode.KNOWN:
+            self.anonymous_alias = None
         super().save(*args, **kwargs)
 
     @classmethod
