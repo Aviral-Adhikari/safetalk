@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.SafetalkAuth.setCurrentUser(currentUser);
 
   let rooms = [];
+  let currentMessages = [];
   let activeRoomId = new URLSearchParams(window.location.search).get("room") || window.SafetalkAuth.getActiveRoomId();
 
   function initialsFromName(name) {
@@ -45,6 +46,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     sidebarMessage.textContent = text;
     sidebarMessage.classList.remove("is-hidden");
     sidebarMessage.classList.add("is-error");
+  }
+
+  function clearSidebarMessage() {
+    sidebarMessage.textContent = "";
+    sidebarMessage.classList.add("is-hidden");
   }
 
   function renderConversationList(items) {
@@ -83,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     headerAvatar.textContent = initialsFromName(psychologist.full_name);
     headerName.textContent = psychologist.full_name;
-    headerStatus.textContent = `${psychologist.specialization} • Private counseling room`;
+    headerStatus.textContent = `${psychologist.specialization} - Private counseling room`;
     contextIdentity.innerHTML = `<i class="fa-solid fa-user-secret"></i> Psychologist sees: <strong>${clientIdentity.display_name || "Private User"}</strong>`;
     sidebarCopy.textContent = `${clientIdentity.identity_mode === "anonymous" ? "Anonymous Mode" : "Known Mode"}: ${clientIdentity.display_name || "Ready"}`;
     messageInput.placeholder = `Message ${psychologist.full_name} as ${clientIdentity.display_name || "client"}`;
@@ -115,7 +121,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     messages.forEach((message) => {
       const article = document.createElement("article");
-      article.className = `message-group ${message.sender === currentUser.id ? "user-message" : "doctor-message"}`;
+      const isUserMessage = String(message.sender) === String(currentUser.id);
+      article.className = `message-group ${isUserMessage ? "user-message" : "doctor-message"}`;
       article.innerHTML = `
         <span class="message-author">${message.sender_display_name}</span>
         <div class="message-bubble">${message.content}</div>
@@ -130,12 +137,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadMessages(roomId) {
     // Backend call: load message history for the opened chat room.
     const messages = await window.SafetalkApi.getRoomMessages(roomId);
-    renderMessages(messages);
+    currentMessages = messages;
+    renderMessages(currentMessages);
   }
 
   async function loadRoom(roomId) {
     window.SafetalkAuth.setActiveRoomId(roomId);
     activeRoomId = roomId;
+    console.log("[Safetalk][Chat] Selected chat room id:", activeRoomId);
 
     // Backend call: load the selected room and its safe session metadata.
     const room = await window.SafetalkApi.getChatRoom(roomId);
@@ -173,6 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   chatForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    clearSidebarMessage();
 
     if (!activeRoomId) {
       showSidebarMessage("Select a room before sending messages.");
@@ -186,13 +196,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       // Backend call: send a message to the currently open room.
-      await window.SafetalkApi.sendRoomMessage(activeRoomId, {
+      const createdMessage = await window.SafetalkApi.sendRoomMessage(activeRoomId, {
         content,
         message_type: "text",
       });
+      console.log("[Safetalk][Chat] Send message response:", createdMessage);
 
+      currentMessages = [...currentMessages, createdMessage];
+      renderMessages(currentMessages);
       messageInput.value = "";
-      await loadMessages(activeRoomId);
+
+      try {
+        await loadMessages(activeRoomId);
+      } catch (refreshError) {
+        console.warn("[Safetalk][Chat] Message refresh failed after send:", refreshError);
+      }
     } catch (error) {
       showSidebarMessage(error.message);
     }

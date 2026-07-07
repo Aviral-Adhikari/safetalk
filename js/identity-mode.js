@@ -15,12 +15,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     messageBox.classList.add(type === "success" ? "is-success" : "is-error");
   }
 
+  function wait(delayMs) {
+    return new Promise((resolve) => {
+      window.setTimeout(resolve, delayMs);
+    });
+  }
+
+  async function findRoomForSession(session) {
+    for (let attempt = 0; attempt < 4; attempt += 1) {
+      const rooms = await window.SafetalkApi.listChatRooms();
+      const room = rooms.find((item) =>
+        String(item.session.id) === String(session.id) ||
+        String(item.session.session_id) === String(session.session_id)
+      );
+
+      if (room) {
+        return room;
+      }
+
+      if (attempt < 3) {
+        await wait(400);
+      }
+    }
+
+    return null;
+  }
+
   async function createSession(identityMode, button) {
     const selectedPsychologist = window.SafetalkAuth.getSelectedPsychologist();
     if (!selectedPsychologist) {
       showMessage("Choose a psychologist before selecting your identity mode.", "error");
       return;
     }
+
+    console.log("[Safetalk][Identity] Selected psychologist id:", selectedPsychologist.id);
+    console.log("[Safetalk][Identity] Identity mode:", identityMode);
 
     button.disabled = true;
     button.setAttribute("aria-busy", "true");
@@ -31,18 +60,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         psychologist_id: selectedPsychologist.id,
         identity_mode: identityMode,
       });
+      console.log("[Safetalk][Identity] Created session response:", session);
 
       window.SafetalkAuth.setIdentityMode(identityMode);
       window.SafetalkAuth.setActiveSession(session);
 
       // Backend call: fetch chat rooms and open the room attached to the new session.
-      const rooms = await window.SafetalkApi.listChatRooms();
-      const room = rooms.find((item) => item.session.id === session.id);
+      const room = await findRoomForSession(session);
 
       if (!room) {
         throw new Error("Session created, but no chat room was found yet.");
       }
 
+      console.log("[Safetalk][Identity] Selected chat room id:", room.id);
       window.SafetalkAuth.setActiveRoomId(room.id);
       showMessage("Session created. Opening your secure chat room.", "success");
 
@@ -75,7 +105,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    selectedPsychologistSummary.textContent = `Selected psychologist: ${selectedPsychologist.full_name} • ${selectedPsychologist.specialization}`;
+    console.log("[Safetalk][Identity] Loaded selected psychologist from storage:", selectedPsychologist);
+    selectedPsychologistSummary.textContent = `Selected psychologist: ${selectedPsychologist.full_name} - ${selectedPsychologist.specialization}`;
 
     anonymousButton.addEventListener("click", () => createSession("anonymous", anonymousButton));
     knownButton.addEventListener("click", () => createSession("known", knownButton));
