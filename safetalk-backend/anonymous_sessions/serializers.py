@@ -98,14 +98,23 @@ class AnonymousSessionStatusSerializer(serializers.ModelSerializer):
 
         if value == AnonymousSession.Status.ACTIVE:
             psychologist_user = getattr(session.psychologist, "user", None)
-            if user.role != "psychologist" or psychologist_user is None or psychologist_user.id != user.id:
+            if (
+                user.role != "psychologist"
+                or not user.is_psychologist_verified
+                or psychologist_user is None
+                or psychologist_user.id != user.id
+            ):
                 raise serializers.ValidationError("Only the assigned psychologist can mark a session as active.")
             return value
 
         if value == AnonymousSession.Status.ENDED:
             is_client = session.client_id == user.id
             psychologist_user = getattr(session.psychologist, "user", None)
-            is_psychologist = psychologist_user is not None and psychologist_user.id == user.id
+            is_psychologist = (
+                psychologist_user is not None
+                and psychologist_user.id == user.id
+                and user.is_psychologist_verified
+            )
             if not (is_client or is_psychologist):
                 raise serializers.ValidationError("Only session participants can end a session.")
             return value

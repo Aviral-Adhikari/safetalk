@@ -37,6 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (params.get("registered") === "1") {
     showMessage("Account created successfully. Please login to continue.", "success");
+  } else if (params.get("pending") === "1") {
+    showMessage("Your psychologist account is pending admin verification.", "error");
+    selectedMode = "psychologist";
   } else if (params.get("psychologist_applied") === "1") {
     showMessage("Psychologist application submitted. You can login after admin verification.", "success");
     selectedMode = "psychologist";
@@ -82,6 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (normalizedRole === "psychologist" && !currentUser.is_psychologist_verified) {
         window.SafetalkAuth.logout({ redirect: false });
         showMessage("Your psychologist account is pending admin verification.", "error");
+        return;
+      }
+
+      if (normalizedRole === "psychologist") {
+        window.location.href = "psychologist-dashboard.html";
+        return;
+      }
+
+      if (currentUser.is_staff || currentUser.is_superuser) {
+        showMessage("Admin users should continue from the Django admin panel.", "success");
         return;
       }
 

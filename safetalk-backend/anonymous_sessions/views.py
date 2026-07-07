@@ -17,7 +17,12 @@ class AnonymousSessionListCreateAPIView(generics.ListCreateAPIView):
             "psychologist__user",
         )
 
+        if user.is_staff or user.is_superuser:
+            return queryset.order_by("-created_at")
+
         if user.role == "psychologist":
+            if not user.is_psychologist_verified:
+                return queryset.none()
             return queryset.filter(psychologist__user=user).order_by("-created_at")
 
         return queryset.filter(client=user).order_by("-created_at")
@@ -43,7 +48,12 @@ class AnonymousSessionStatusUpdateAPIView(generics.UpdateAPIView):
             "psychologist__user",
         )
 
+        if user.is_staff or user.is_superuser:
+            return queryset
+
         if user.role == "psychologist":
+            if not user.is_psychologist_verified:
+                return queryset.none()
             return queryset.filter(psychologist__user=user)
 
         return queryset.filter(client=user)

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psychologist Dashboard | Safetalk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="psychologist-dashboard">
+  <header class="site-header">
+    <nav class="navbar therapist-navbar">
+      <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>Safetalk</span></a>
+      <div class="nav-links">
+        <a href="psychologist-dashboard.html">Therapist Dashboard</a>
+        <a href="#pending-requests">Pending Sessions</a>
+        <a href="#active-sessions">Active Sessions</a>
+        <a href="#completed-sessions">Ended Sessions</a>
+        <a href="#availability-panel">Availability</a>
+        <a href="about.html">Profile</a>
+      </div>
+      <div class="nav-actions"><a class="login-link" href="#" id="logout-link">Logout</a><a class="btn btn-primary btn-small" href="chat.html" id="dashboard-primary-action">Open Chat</a></div>
+    </nav>
+  </header>
+
+  <main class="dashboard-page therapist-dashboard-page">
+    <section class="container dashboard-header therapist-header">
+      <span class="section-label">Therapist Workspace</span>
+      <h1 id="dashboard-welcome">Welcome back.</h1>
+      <p id="dashboard-subtitle">Review assigned counseling sessions, accept new requests, and continue secure conversations.</p>
+    </section>
+
+    <section class="container therapist-stats-grid" aria-label="Session summary">
+      <article class="therapist-stat-card">
+        <span class="stat-icon pending"><i class="fa-solid fa-inbox"></i></span>
+        <div>
+          <strong id="pending-sessions-count">0</strong>
+          <p>Pending Requests</p>
+        </div>
+      </article>
+      <article class="therapist-stat-card">
+        <span class="stat-icon active"><i class="fa-solid fa-comments"></i></span>
+        <div>
+          <strong id="active-sessions-count">0</strong>
+          <p>Active Sessions</p>
+        </div>
+      </article>
+      <article class="therapist-stat-card">
+        <span class="stat-icon ended"><i class="fa-solid fa-circle-check"></i></span>
+        <div>
+          <strong id="ended-sessions-count">0</strong>
+          <p>Completed Sessions</p>
+        </div>
+      </article>
+      <article class="therapist-stat-card" id="availability-panel">
+        <span class="stat-icon availability"><i class="fa-solid fa-user-check"></i></span>
+        <div>
+          <strong id="availability-status">Available</strong>
+          <p>Availability status</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="container identity-status-card therapist-status-card" id="identity-status-card">
+      <div class="status-icon" id="identity-status-icon"><i class="fa-solid fa-user-doctor"></i></div>
+      <div>
+        <span class="section-label" id="identity-status-label">Verified psychologist</span>
+        <h2 id="identity-status-title">Clinical session queue</h2>
+        <p id="identity-status-copy">Client requests and counseling sessions assigned to you appear below.</p>
+      </div>
+      <a class="btn btn-secondary" href="chat.html" id="identity-status-action">Open Chat</a>
+    </section>
+
+    <section class="container therapist-session-grid">
+      <div class="dashboard-panel therapist-session-section pending-requests" id="pending-requests">
+        <h2 id="pending-sessions-title">Pending Requests</h2>
+        <p class="panel-kicker">Client requests waiting for your review.</p>
+        <div class="page-message is-hidden" id="dashboard-sessions-message" aria-live="polite"></div>
+        <div id="pending-sessions-list"></div>
+      </div>
+
+      <div class="dashboard-panel therapist-session-section active-counseling" id="active-sessions">
+        <h2 id="active-sessions-title">Active Counseling Sessions</h2>
+        <p class="panel-kicker">Ongoing sessions ready for follow-up.</p>
+        <div id="active-sessions-list"></div>
+      </div>
+
+      <div class="dashboard-panel therapist-session-section completed-sessions" id="completed-sessions">
+        <h2 id="ended-sessions-title">Completed Sessions</h2>
+        <p class="panel-kicker">Closed conversations available for review.</p>
+        <div id="ended-sessions-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <a class="brand footer-brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>Safetalk</span></a>
+      <div class="footer-links"><a href="about.html">Privacy Policy</a><a href="about.html">Terms of Service</a><a href="about.html">Contact</a></div>
+      <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/psychologist-dashboard.js"></script>
+</body>
+</html>

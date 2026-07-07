@@ -135,6 +135,14 @@
 
   function redirectIfLoggedIn(redirectTo) {
     if (getAccessToken() || getRefreshToken()) {
+      const currentUser = getCurrentUser();
+      const role = String(currentUser?.role || "").trim().toLowerCase();
+
+      if (!redirectTo && role === "psychologist" && currentUser?.is_psychologist_verified) {
+        window.location.href = "psychologist-dashboard.html";
+        return;
+      }
+
       window.location.href = redirectTo || "dashboard.html";
     }
   }

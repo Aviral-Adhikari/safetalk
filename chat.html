@@ -20,13 +20,13 @@
             <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
             <span>Safetalk</span>
           </a>
-          <a class="workspace-link" href="dashboard.html">Dashboard</a>
+          <a class="workspace-link" href="dashboard.html" id="chat-dashboard-link">Dashboard</a>
         </div>
 
         <div class="sidebar-top">
           <div>
-            <span class="section-label">Messages</span>
-            <h2>Care team</h2>
+            <span class="section-label" id="chat-sidebar-label">Messages</span>
+            <h2 id="chat-sidebar-title">Care team</h2>
           </div>
           <span class="secure-dot" aria-label="Private conversations">
             <i class="fa-solid fa-shield-halved"></i>
@@ -80,7 +80,7 @@
         <div class="chat-context">
           <span id="chat-context-identity"><i class="fa-solid fa-user-secret"></i> Loading identity mode...</span>
           <span id="chat-session-status"><i class="fa-solid fa-hourglass-half"></i> Session status: Pending</span>
-          <span><i class="fa-solid fa-lock"></i> Your account remains internally verified for safety.</span>
+          <span id="chat-session-wording"><i class="fa-solid fa-lock"></i> Your counseling session is protected.</span>
         </div>
 
         <div class="messages" aria-label="Chat messages" id="messages-list"></div>
@@ -96,7 +96,7 @@
         </form>
       </section>
 
-      <aside class="profile-panel" aria-label="Psychologist information">
+      <aside class="profile-panel" aria-label="Conversation information">
         <div class="profile-summary-card">
           <span class="profile-avatar profile-panel-avatar" id="profile-panel-avatar">--</span>
           <h2 id="profile-panel-name">No room selected</h2>
@@ -105,12 +105,12 @@
         </div>
 
         <div class="info-card">
-          <h3>Experience</h3>
+          <h3 id="profile-panel-detail-title">Experience</h3>
           <p id="profile-panel-experience">Experience details load from the counseling session directory.</p>
         </div>
 
         <div class="info-card">
-          <h3>Short bio</h3>
+          <h3 id="profile-panel-bio-title">Short bio</h3>
           <p id="profile-panel-bio">Messages stay inside your secure room until real-time updates are added later.</p>
         </div>
 

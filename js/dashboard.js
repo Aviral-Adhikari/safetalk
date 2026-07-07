@@ -90,8 +90,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!rooms.length) {
       recentChatsList.appendChild(
         createEmptyState(
-          "No counseling rooms yet",
-          "Choose a psychologist and create your first counseling session to begin chatting."
+          "No current session yet",
+          "Find an available psychologist and start anonymous or known counseling when you are ready."
         )
       );
       return;
@@ -99,13 +99,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     rooms.forEach((room) => {
       const row = document.createElement("a");
-      row.className = "chat-row";
+      row.className = "chat-row client-session-card";
       row.href = `chat.html?room=${room.id}`;
       row.innerHTML = `
         <span class="profile-avatar">${initialsFromName(room.session.psychologist.full_name)}</span>
         <div>
           <strong>${room.session.psychologist.full_name}</strong>
-          <p>${room.session.psychologist.specialization}. ${room.session.client_identity.display_name || "Private room"}.</p>
+          <p>Your counseling session - ${formatStatusLabel(room.session.status)}.</p>
         </div>
       `;
       recentChatsList.appendChild(row);
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       recommendedList.appendChild(
         createEmptyState(
           "No verified psychologists yet",
-          "Psychologist recommendations will appear here once profiles are available."
+          "Available psychologists will appear here once profiles are verified."
         )
       );
       return;
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderClientDashboard(rooms, psychologists) {
     welcomeHeading.textContent = `Welcome back, ${currentUser.full_name || currentUser.username}.`;
-    subtitle.textContent = `Your account is active as ${currentUser.username}. Choose a psychologist, then decide how you want to appear in counseling sessions.`;
+    subtitle.textContent = `Your account is active as ${currentUser.username}. Find support, choose anonymous or known counseling, and return to your sessions anytime.`;
 
     const activeSession = window.SafetalkAuth.getActiveSession();
     const identityMode = (activeSession && activeSession.identity_mode) || window.SafetalkAuth.getIdentityMode();
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     primaryAction.href = "psychologists.html";
     primaryAction.textContent = "Find Psychologist";
 
-    statusLabel.textContent = "Current identity mode";
+    statusLabel.textContent = "Your session identity";
     statusAction.href = "identity-mode.html";
     statusAction.textContent = "Change Mode";
     statusAction.classList.remove("is-hidden");
@@ -170,14 +170,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       statusIcon.innerHTML = '<i class="fa-solid fa-mask"></i>';
     }
 
-    panelOneTitle.textContent = "Recent chats";
-    panelTwoTitle.textContent = "Quick actions";
-    panelThreeTitle.textContent = "Recommended psychologists";
+    panelOneTitle.textContent = "My current session";
+    panelTwoTitle.textContent = "Start counseling";
+    panelThreeTitle.textContent = "Find available psychologists";
 
     panelTwoContent.innerHTML = `
       <a class="action-tile" href="identity-mode.html"><i class="fa-solid fa-id-card"></i><span>Choose identity mode</span></a>
       <a class="action-tile" href="psychologists.html"><i class="fa-solid fa-user-doctor"></i><span>Find psychologist</span></a>
-      <a class="action-tile" href="chat.html"><i class="fa-solid fa-message"></i><span>Open secure chat</span></a>
+      <a class="action-tile" href="chat.html"><i class="fa-solid fa-message"></i><span>My session history</span></a>
     `;
 
     renderRooms(rooms);
@@ -355,24 +355,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const normalizedRole = normalizeRole(currentUser.role);
 
     if (normalizedRole === "psychologist") {
-      const [sessionsResult, roomsResult] = await Promise.allSettled([
-        window.SafetalkApi.listCounselingSessions(),
-        window.SafetalkApi.listChatRooms(),
-      ]);
-
-      currentSessions = sessionsResult.status === "fulfilled" ? sessionsResult.value : [];
-      currentRooms = roomsResult.status === "fulfilled" ? roomsResult.value : [];
-
-      renderPsychologistDashboard();
-
-      if (sessionsResult.status === "rejected") {
-        showMessage(roomsMessage, sessionsResult.reason?.message || "Unable to load assigned sessions.");
-      }
-
-      if (roomsResult.status === "rejected") {
-        showMessage(psychologistsMessage, roomsResult.reason?.message || "Unable to load assigned chat rooms.");
-      }
-
+      window.location.href = "psychologist-dashboard.html";
       return;
     }
 

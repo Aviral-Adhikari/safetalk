@@ -51,6 +51,34 @@
   color: var(--color-primary-hover);
 }
 
+.psychologist-chat .conversation-sidebar,
+.psychologist-chat .profile-panel {
+  background: var(--color-surface);
+}
+
+.psychologist-chat .workspace-link {
+  color: var(--color-primary);
+}
+
+.psychologist-chat .identity-sidebar-note {
+  color: var(--color-text-primary);
+}
+
+.psychologist-chat .identity-sidebar-note i,
+.psychologist-chat .chat-context i {
+  color: var(--color-primary);
+}
+
+.client-chat .conversation-sidebar,
+.client-chat .profile-panel {
+  background: var(--color-sidebar);
+}
+
+.client-chat .identity-sidebar-note i,
+.client-chat .chat-context i {
+  color: var(--color-accent);
+}
+
 .sidebar-top,
 .chat-header,
 .chat-person,
@@ -164,6 +192,14 @@
   background: var(--color-surface);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   transform: translateY(-2px);
+}
+
+.psychologist-chat .conversation.active {
+  border-left: 4px solid var(--color-primary);
+}
+
+.client-chat .conversation.active {
+  border-left: 4px solid var(--color-accent);
 }
 
 .conversation div {

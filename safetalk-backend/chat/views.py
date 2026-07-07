@@ -10,11 +10,18 @@ from .serializers import ChatRoomSerializer, MessageSerializer
 
 
 def _user_can_access_room(user, room):
+    if user.is_staff or user.is_superuser:
+        return True
+
     if room.session.client_id == user.id:
         return True
 
     psychologist_user = getattr(room.session.psychologist, "user", None)
-    return psychologist_user is not None and psychologist_user.id == user.id
+    return (
+        psychologist_user is not None
+        and psychologist_user.id == user.id
+        and user.is_psychologist_verified
+    )
 
 
 class ChatRoomListAPIView(generics.ListAPIView):
@@ -23,19 +30,21 @@ class ChatRoomListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return (
-            ChatRoom.objects.select_related(
-                "session",
-                "session__client",
-                "session__psychologist",
-                "session__psychologist__user",
-            )
-            .filter(
-                models.Q(session__client=user) |
-                models.Q(session__psychologist__user=user)
-            )
-            .order_by("-created_at")
+        queryset = ChatRoom.objects.select_related(
+            "session",
+            "session__client",
+            "session__psychologist",
+            "session__psychologist__user",
         )
+
+        if user.is_staff or user.is_superuser:
+            return queryset.order_by("-created_at")
+
+        filters = models.Q(session__client=user)
+        if user.role == "psychologist" and user.is_psychologist_verified:
+            filters |= models.Q(session__psychologist__user=user)
+
+        return queryset.filter(filters).order_by("-created_at")
 
 
 class ChatRoomDetailAPIView(generics.RetrieveAPIView):
@@ -44,18 +53,21 @@ class ChatRoomDetailAPIView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return (
-            ChatRoom.objects.select_related(
-                "session",
-                "session__client",
-                "session__psychologist",
-                "session__psychologist__user",
-            )
-            .filter(
-                models.Q(session__client=user) |
-                models.Q(session__psychologist__user=user)
-            )
+        queryset = ChatRoom.objects.select_related(
+            "session",
+            "session__client",
+            "session__psychologist",
+            "session__psychologist__user",
         )
+
+        if user.is_staff or user.is_superuser:
+            return queryset
+
+        filters = models.Q(session__client=user)
+        if user.role == "psychologist" and user.is_psychologist_verified:
+            filters |= models.Q(session__psychologist__user=user)
+
+        return queryset.filter(filters)
 
 
 class MessageListCreateAPIView(generics.ListCreateAPIView):
