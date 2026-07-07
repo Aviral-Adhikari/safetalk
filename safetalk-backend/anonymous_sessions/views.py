@@ -2,7 +2,7 @@ from rest_framework import generics, permissions
 from rest_framework.exceptions import PermissionDenied
 
 from .models import AnonymousSession
-from .serializers import AnonymousSessionSerializer
+from .serializers import AnonymousSessionSerializer, AnonymousSessionStatusSerializer
 
 
 class AnonymousSessionListCreateAPIView(generics.ListCreateAPIView):
@@ -28,3 +28,22 @@ class AnonymousSessionListCreateAPIView(generics.ListCreateAPIView):
             raise PermissionDenied("Only authenticated clients can create anonymous sessions.")
 
         serializer.save(client=user)
+
+
+class AnonymousSessionStatusUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = AnonymousSessionStatusSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ["patch"]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = AnonymousSession.objects.select_related(
+            "client",
+            "psychologist",
+            "psychologist__user",
+        )
+
+        if user.role == "psychologist":
+            return queryset.filter(psychologist__user=user)
+
+        return queryset.filter(client=user)

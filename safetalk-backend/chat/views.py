@@ -3,6 +3,8 @@ from django.db import models
 from rest_framework import generics, permissions
 from rest_framework.exceptions import PermissionDenied
 
+from anonymous_sessions.models import AnonymousSession
+
 from .models import ChatRoom, Message
 from .serializers import ChatRoomSerializer, MessageSerializer
 
@@ -84,4 +86,6 @@ class MessageListCreateAPIView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         room = self.get_room()
+        if room.session.status == AnonymousSession.Status.ENDED:
+            raise PermissionDenied("This counseling session has ended. New messages are disabled.")
         serializer.save(room=room, sender=self.request.user)

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psychologist Application | Safetalk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html" aria-label="Safetalk home">
+        <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
+        <span>Safetalk</span>
+      </a>
+      <div class="nav-links" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="psychologists.html">Psychologists</a>
+        <a href="index.html#how-it-works">How it Works</a>
+        <a href="about.html">About</a>
+      </div>
+      <div class="nav-actions">
+        <a class="login-link" href="login.html">Login</a>
+        <a class="btn btn-primary btn-small" href="register.html">Create Account</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="auth-page">
+    <section class="auth-shell auth-shell-wide container">
+      <div class="auth-copy">
+        <span class="section-label">Psychologist application</span>
+        <h1>Apply to join Safetalk as a verified psychologist.</h1>
+        <p>
+          Your application creates a psychologist account and professional profile.
+          You will remain hidden from the public listing until an admin reviews and verifies your account.
+        </p>
+      </div>
+
+      <form class="auth-card auth-card-wide" id="psychologist-application-form" novalidate>
+        <div class="form-header">
+          <i class="fa-solid fa-user-doctor"></i>
+          <div>
+            <h2>Psychologist application</h2>
+            <p>Tell us about your counseling practice and experience.</p>
+          </div>
+        </div>
+
+        <label for="psychologist-username">Username</label>
+        <div class="input-group">
+          <i class="fa-solid fa-at"></i>
+          <input type="text" id="psychologist-username" placeholder="dr.ashagurung" required>
+        </div>
+
+        <label for="psychologist-full-name">Full name</label>
+        <div class="input-group">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="psychologist-full-name" placeholder="Dr. Asha Gurung" required>
+        </div>
+
+        <label for="psychologist-email">Email address</label>
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="psychologist-email" placeholder="doctor@example.com" required>
+        </div>
+
+        <label for="psychologist-password">Password</label>
+        <div class="input-group">
+          <i class="fa-solid fa-key"></i>
+          <input type="password" id="psychologist-password" placeholder="Create a secure password" required>
+        </div>
+
+        <label for="psychologist-specialization">Specialization</label>
+        <div class="input-group">
+          <i class="fa-solid fa-brain"></i>
+          <input type="text" id="psychologist-specialization" placeholder="Trauma recovery" required>
+        </div>
+
+        <label for="psychologist-experience">Years of experience</label>
+        <div class="input-group">
+          <i class="fa-solid fa-award"></i>
+          <input type="number" id="psychologist-experience" min="0" placeholder="6" required>
+        </div>
+
+        <label for="psychologist-languages">Languages</label>
+        <div class="input-group">
+          <i class="fa-solid fa-language"></i>
+          <input type="text" id="psychologist-languages" placeholder="English, Nepali" required>
+        </div>
+
+        <label for="psychologist-bio">Professional bio</label>
+        <div class="input-group textarea-group">
+          <i class="fa-solid fa-notes-medical"></i>
+          <textarea id="psychologist-bio" placeholder="Share your counseling focus, approach, and professional background." rows="5" required></textarea>
+        </div>
+
+        <div class="form-message is-hidden" id="psychologist-application-message" aria-live="polite"></div>
+        <button class="btn btn-primary" type="submit">Submit Application</button>
+        <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <a class="brand footer-brand" href="index.html">
+        <span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span>
+        <span>Safetalk</span>
+      </a>
+      <div class="footer-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms of Service</a>
+        <a href="about.html">Contact</a>
+      </div>
+      <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/psychologist-register.js"></script>
+</body>
+</html>

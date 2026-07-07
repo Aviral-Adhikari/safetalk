@@ -40,7 +40,7 @@
 
         <div class="identity-sidebar-note">
           <i class="fa-solid fa-user-secret"></i>
-          <span id="identity-sidebar-copy">Loading session identity…</span>
+          <span id="identity-sidebar-copy">Loading session identity...</span>
         </div>
 
         <div class="page-message is-hidden" id="chat-sidebar-message" aria-live="polite"></div>
@@ -78,7 +78,8 @@
         </header>
 
         <div class="chat-context">
-          <span id="chat-context-identity"><i class="fa-solid fa-user-secret"></i> Loading identity mode…</span>
+          <span id="chat-context-identity"><i class="fa-solid fa-user-secret"></i> Loading identity mode...</span>
+          <span id="chat-session-status"><i class="fa-solid fa-hourglass-half"></i> Session status: Pending</span>
           <span><i class="fa-solid fa-lock"></i> Your account remains internally verified for safety.</span>
         </div>
 
@@ -115,6 +116,14 @@
 
         <div class="quick-actions-card">
           <h3>Quick actions</h3>
+          <button class="panel-action is-hidden" type="button" id="mark-session-active-button">
+            <i class="fa-solid fa-circle-play"></i>
+            Mark session active
+          </button>
+          <button class="panel-action is-hidden" type="button" id="end-session-button">
+            <i class="fa-solid fa-circle-stop"></i>
+            End session
+          </button>
           <button class="panel-action" type="button">
             <i class="fa-solid fa-video"></i>
             Start video call

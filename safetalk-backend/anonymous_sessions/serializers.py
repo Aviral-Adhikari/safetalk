@@ -73,3 +73,41 @@ class AnonymousSessionSerializer(serializers.ModelSerializer):
             "identity_mode": obj.identity_mode,
             "display_name": display_name,
         }
+
+
+class AnonymousSessionStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnonymousSession
+        fields = (
+            "id",
+            "status",
+            "updated_at",
+        )
+        read_only_fields = (
+            "id",
+            "updated_at",
+        )
+
+    def validate_status(self, value):
+        request = self.context["request"]
+        user = request.user
+        session = self.instance
+
+        if session.status == AnonymousSession.Status.ENDED and value != AnonymousSession.Status.ENDED:
+            raise serializers.ValidationError("Ended sessions cannot be reopened.")
+
+        if value == AnonymousSession.Status.ACTIVE:
+            psychologist_user = getattr(session.psychologist, "user", None)
+            if user.role != "psychologist" or psychologist_user is None or psychologist_user.id != user.id:
+                raise serializers.ValidationError("Only the assigned psychologist can mark a session as active.")
+            return value
+
+        if value == AnonymousSession.Status.ENDED:
+            is_client = session.client_id == user.id
+            psychologist_user = getattr(session.psychologist, "user", None)
+            is_psychologist = psychologist_user is not None and psychologist_user.id == user.id
+            if not (is_client or is_psychologist):
+                raise serializers.ValidationError("Only session participants can end a session.")
+            return value
+
+        raise serializers.ValidationError("Session status can only be updated to active or ended.")

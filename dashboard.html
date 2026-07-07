@@ -30,29 +30,31 @@
     <section class="container identity-status-card" id="identity-status-card">
       <div class="status-icon" id="identity-status-icon"><i class="fa-solid fa-mask"></i></div>
       <div>
-        <span class="section-label">Current identity mode</span>
+        <span class="section-label" id="identity-status-label">Current identity mode</span>
         <h2 id="identity-status-title">Choose a mode</h2>
         <p id="identity-status-copy">Pick anonymous or known mode before starting a counseling session.</p>
       </div>
-      <a class="btn btn-secondary" href="identity-mode.html">Change Mode</a>
+      <a class="btn btn-secondary" href="identity-mode.html" id="identity-status-action">Change Mode</a>
     </section>
 
     <section class="container dashboard-grid">
       <div class="dashboard-panel recent-chats">
-        <h2>Recent chats</h2>
+        <h2 id="panel-one-title">Recent chats</h2>
         <div class="page-message is-hidden" id="dashboard-rooms-message" aria-live="polite"></div>
         <div id="recent-chats-list"></div>
       </div>
 
-      <div class="dashboard-panel quick-actions">
-        <h2>Quick actions</h2>
-        <a class="action-tile" href="identity-mode.html"><i class="fa-solid fa-id-card"></i><span>Choose identity mode</span></a>
-        <a class="action-tile" href="psychologists.html"><i class="fa-solid fa-user-doctor"></i><span>Find psychologist</span></a>
-        <a class="action-tile" href="chat.html"><i class="fa-solid fa-message"></i><span>Open secure chat</span></a>
+      <div class="dashboard-panel quick-actions" id="panel-two">
+        <h2 id="panel-two-title">Quick actions</h2>
+        <div id="panel-two-content">
+          <a class="action-tile" href="identity-mode.html"><i class="fa-solid fa-id-card"></i><span>Choose identity mode</span></a>
+          <a class="action-tile" href="psychologists.html"><i class="fa-solid fa-user-doctor"></i><span>Find psychologist</span></a>
+          <a class="action-tile" href="chat.html"><i class="fa-solid fa-message"></i><span>Open secure chat</span></a>
+        </div>
       </div>
 
-      <div class="dashboard-panel recommended">
-        <h2>Recommended psychologists</h2>
+      <div class="dashboard-panel recommended" id="panel-three">
+        <h2 id="panel-three-title">Recommended psychologists</h2>
         <div class="page-message is-hidden" id="dashboard-psychologists-message" aria-live="polite"></div>
         <div id="recommended-psychologists-list"></div>
       </div>

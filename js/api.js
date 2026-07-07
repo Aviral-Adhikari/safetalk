@@ -94,6 +94,14 @@
     });
   }
 
+  async function psychologistApply(payload) {
+    return request("/api/auth/psychologist-apply/", {
+      method: "POST",
+      requiresAuth: false,
+      body: payload,
+    });
+  }
+
   async function login(payload) {
     return request("/api/auth/login/", {
       method: "POST",
@@ -130,6 +138,13 @@
     return request("/api/anonymous-sessions/");
   }
 
+  async function updateCounselingSessionStatus(sessionId, payload) {
+    return request(`/api/anonymous-sessions/${sessionId}/status/`, {
+      method: "PATCH",
+      body: payload,
+    });
+  }
+
   async function listChatRooms() {
     return request("/api/chat/rooms/");
   }
@@ -152,12 +167,14 @@
   window.SafetalkApi = {
     request,
     register,
+    psychologistApply,
     login,
     refresh,
     getMe,
     getPsychologists,
     createCounselingSession,
     listCounselingSessions,
+    updateCounselingSessionStatus,
     listChatRooms,
     getChatRoom,
     getRoomMessages,

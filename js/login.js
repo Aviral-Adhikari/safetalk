@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
     messageBox.textContent = "Account created successfully. Please login to continue.";
     messageBox.classList.remove("is-hidden");
     messageBox.classList.add("is-success");
+  } else if (params.get("psychologist_applied") === "1") {
+    messageBox.textContent = "Psychologist application submitted. You can login after admin verification.";
+    messageBox.classList.remove("is-hidden");
+    messageBox.classList.add("is-success");
   }
 
   function showMessage(text, type) {

@@ -3,11 +3,20 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import RegisterSerializer, UserSafeSerializer
+from .serializers import (
+    PsychologistApplicationSerializer,
+    RegisterSerializer,
+    UserSafeSerializer,
+)
 
 
 class RegisterAPIView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class PsychologistApplicationAPIView(generics.CreateAPIView):
+    serializer_class = PsychologistApplicationSerializer
     permission_classes = [permissions.AllowAny]
 
 
