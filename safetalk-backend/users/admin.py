@@ -8,6 +8,24 @@ from django.urls import path, reverse
 from .models import User
 
 
+def approve_psychologist_user(user):
+    user.role = User.Role.PSYCHOLOGIST
+    user.is_psychologist_verified = True
+    user.is_active = True
+    user.save(update_fields=["role", "is_psychologist_verified", "is_active"])
+
+    try:
+        profile = user.psychologist_profile
+    except User.psychologist_profile.RelatedObjectDoesNotExist:
+        return False
+
+    if not profile.is_available:
+        profile.is_available = True
+        profile.save(update_fields=["is_available", "updated_at"])
+
+    return True
+
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
@@ -28,16 +46,38 @@ class CustomUserChangeForm(UserChangeForm):
 
 @admin.action(description="Verify selected psychologists")
 def verify_selected_psychologists(modeladmin, request, queryset):
-    updated_count = queryset.update(
-        role=User.Role.PSYCHOLOGIST,
-        is_psychologist_verified=True,
-        is_active=True,
-    )
+    verified_count = 0
+    missing_profile_count = 0
+
+    for user in queryset.filter(role=User.Role.PSYCHOLOGIST):
+        profile_available = approve_psychologist_user(user)
+        verified_count += 1
+        if not profile_available:
+            missing_profile_count += 1
+
     modeladmin.message_user(
         request,
-        f"{updated_count} psychologist application(s) verified successfully.",
+        f"{verified_count} psychologist application(s) verified successfully.",
         level=messages.SUCCESS,
     )
+
+    skipped_count = queryset.exclude(role=User.Role.PSYCHOLOGIST).count()
+    if skipped_count:
+        modeladmin.message_user(
+            request,
+            f"{skipped_count} selected user(s) skipped because they are not psychologists.",
+            level=messages.WARNING,
+        )
+
+    if missing_profile_count:
+        modeladmin.message_user(
+            request,
+            (
+                f"{missing_profile_count} verified psychologist(s) do not have a "
+                "PsychologistProfile, so availability could not be updated."
+            ),
+            level=messages.WARNING,
+        )
 
 
 @admin.action(description="Reject psychologist applications")
@@ -177,15 +217,33 @@ class CustomUserAdmin(UserAdmin):
           self.message_user(request, "Psychologist application not found.", level=messages.ERROR)
           return HttpResponseRedirect(reverse("admin:users_user_pending_applications"))
 
-        user.role = User.Role.PSYCHOLOGIST
-        user.is_psychologist_verified = True
-        user.is_active = True
-        user.save(update_fields=["role", "is_psychologist_verified", "is_active"])
-        self.message_user(
-            request,
-            f"{user.full_name or user.username} has been verified as a psychologist.",
-            level=messages.SUCCESS,
-        )
+        if user.role != User.Role.PSYCHOLOGIST:
+            self.message_user(
+                request,
+                f"{user.full_name or user.username} is not a psychologist application.",
+                level=messages.ERROR,
+            )
+            return HttpResponseRedirect(reverse("admin:users_user_pending_applications"))
+
+        profile_available = approve_psychologist_user(user)
+        if profile_available:
+            self.message_user(
+                request,
+                (
+                    f"{user.full_name or user.username} has been verified as a "
+                    "psychologist and marked available."
+                ),
+                level=messages.SUCCESS,
+            )
+        else:
+            self.message_user(
+                request,
+                (
+                    f"{user.full_name or user.username} has been verified, but no "
+                    "PsychologistProfile was found to mark available."
+                ),
+                level=messages.WARNING,
+            )
         return HttpResponseRedirect(reverse("admin:users_user_pending_applications"))
 
     def reject_application_view(self, request, user_id):
