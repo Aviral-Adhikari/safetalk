@@ -19,7 +19,7 @@ WHITE_NOISE_AVAILABLE = importlib.util.find_spec("whitenoise") is not None
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -194,7 +194,7 @@ USE_TZ = True
 # STATIC FILES
 # =========================
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 if WHITE_NOISE_AVAILABLE:

@@ -9,13 +9,12 @@ class PsychologistProfileAdmin(admin.ModelAdmin):
         "user",
         "specialization",
         "years_of_experience",
-        "languages",
         "is_available",
         "created_at",
     )
     list_filter = (
-        "is_available",
         "specialization",
+        "is_available",
         "created_at",
     )
     search_fields = (

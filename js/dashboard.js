@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.SafetalkAuth.redirectIfNotLoggedIn();
 
   const logoutLink = document.getElementById("logout-link");
+  const primaryAction = document.getElementById("dashboard-primary-action");
   const welcomeHeading = document.getElementById("dashboard-welcome");
   const subtitle = document.getElementById("dashboard-subtitle");
   const statusLabel = document.getElementById("identity-status-label");
@@ -17,6 +18,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const panelThreeTitle = document.getElementById("panel-three-title");
   const roomsMessage = document.getElementById("dashboard-rooms-message");
   const psychologistsMessage = document.getElementById("dashboard-psychologists-message");
+
+  let currentUser = null;
+  let currentSessions = [];
+  let currentRooms = [];
 
   logoutLink.addEventListener("click", (event) => {
     event.preventDefault();
@@ -49,6 +54,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       .map((part) => part[0])
       .join("")
       .toUpperCase();
+  }
+
+  function normalizeRole(roleValue) {
+    return String(roleValue || "").trim().toLowerCase();
   }
 
   function formatStatusLabel(statusValue) {
@@ -132,12 +141,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  function renderClientDashboard(currentUser, rooms, psychologists) {
+  function renderClientDashboard(rooms, psychologists) {
     welcomeHeading.textContent = `Welcome back, ${currentUser.full_name || currentUser.username}.`;
     subtitle.textContent = `Your account is active as ${currentUser.username}. Choose a psychologist, then decide how you want to appear in counseling sessions.`;
 
     const activeSession = window.SafetalkAuth.getActiveSession();
     const identityMode = (activeSession && activeSession.identity_mode) || window.SafetalkAuth.getIdentityMode();
+
+    primaryAction.href = "psychologists.html";
+    primaryAction.textContent = "Find Psychologist";
 
     statusLabel.textContent = "Current identity mode";
     statusAction.href = "identity-mode.html";
@@ -172,15 +184,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderPsychologists(psychologists);
   }
 
-  function findRoomForSession(sessionId, rooms) {
-    return rooms.find((room) => String(room.session.id) === String(sessionId));
+  function findRoomForSession(sessionId) {
+    return currentRooms.find((room) => String(room.session.id) === String(sessionId));
   }
 
-  function createSessionCard(session, rooms) {
+  async function updateSessionStatus(sessionId, nextStatus) {
+    const updatedSession = await window.SafetalkApi.updateCounselingSessionStatus(sessionId, {
+      status: nextStatus,
+    });
+
+    currentSessions = currentSessions.map((session) =>
+      String(session.id) === String(updatedSession.id)
+        ? { ...session, status: updatedSession.status, updated_at: updatedSession.updated_at }
+        : session
+    );
+
+    renderPsychologistDashboard();
+  }
+
+  function createSessionCard(session) {
     const card = document.createElement("article");
     card.className = "session-card";
 
-    const matchingRoom = findRoomForSession(session.id, rooms);
+    const matchingRoom = findRoomForSession(session.id);
     const clientDisplayName = session.client_identity?.display_name || "Private User";
     const statusLabelText = formatStatusLabel(session.status);
 
@@ -193,6 +219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <span class="session-status-badge status-${session.status}">${statusLabelText}</span>
       </div>
       <div class="session-card-meta">
+        <span>Assigned client: ${clientDisplayName}</span>
         <span>Session status: ${statusLabelText}</span>
         <span>Started: ${formatCreatedDate(session.created_at)}</span>
       </div>
@@ -201,28 +228,63 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const actions = card.querySelector(".session-card-actions");
 
-    if (!matchingRoom) {
+    if (matchingRoom) {
+      const openChatButton = document.createElement("button");
+      openChatButton.type = "button";
+      openChatButton.className = "btn btn-secondary btn-small";
+      openChatButton.textContent = "Open Chat";
+      openChatButton.addEventListener("click", () => {
+        window.SafetalkAuth.setActiveRoomId(matchingRoom.id);
+        window.location.href = `chat.html?room=${matchingRoom.id}`;
+      });
+      actions.appendChild(openChatButton);
+    } else {
       const mutedText = document.createElement("span");
       mutedText.textContent = "Chat room not available yet";
       mutedText.className = "session-card-meta";
       actions.appendChild(mutedText);
-      return card;
     }
 
-    const openChatButton = document.createElement("button");
-    openChatButton.type = "button";
-    openChatButton.className = "btn btn-secondary btn-small";
-    openChatButton.textContent = "Open Chat";
-    openChatButton.addEventListener("click", () => {
-      window.SafetalkAuth.setActiveRoomId(matchingRoom.id);
-      window.location.href = `chat.html?room=${matchingRoom.id}`;
-    });
-    actions.appendChild(openChatButton);
+    if (session.status === "pending") {
+      const acceptButton = document.createElement("button");
+      acceptButton.type = "button";
+      acceptButton.className = "btn btn-primary btn-small";
+      acceptButton.textContent = "Accept Session";
+      acceptButton.addEventListener("click", async () => {
+        try {
+          acceptButton.disabled = true;
+          await updateSessionStatus(session.id, "active");
+        } catch (error) {
+          showMessage(roomsMessage, error.message);
+        } finally {
+          acceptButton.disabled = false;
+        }
+      });
+      actions.appendChild(acceptButton);
+    }
+
+    if (session.status === "pending" || session.status === "active") {
+      const endButton = document.createElement("button");
+      endButton.type = "button";
+      endButton.className = "btn btn-secondary btn-small";
+      endButton.textContent = "End Session";
+      endButton.addEventListener("click", async () => {
+        try {
+          endButton.disabled = true;
+          await updateSessionStatus(session.id, "ended");
+        } catch (error) {
+          showMessage(psychologistsMessage, error.message);
+        } finally {
+          endButton.disabled = false;
+        }
+      });
+      actions.appendChild(endButton);
+    }
 
     return card;
   }
 
-  function renderSessionGroup(container, sessions, rooms, emptyTitle, emptyText) {
+  function renderSessionGroup(container, sessions, emptyTitle, emptyText) {
     container.innerHTML = "";
 
     if (!sessions.length) {
@@ -233,34 +295,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     const stack = document.createElement("div");
     stack.className = "session-stack";
     sessions.forEach((session) => {
-      stack.appendChild(createSessionCard(session, rooms));
+      stack.appendChild(createSessionCard(session));
     });
     container.appendChild(stack);
   }
 
-  function renderPsychologistDashboard(currentUser, sessions, rooms) {
+  function renderPsychologistDashboard() {
     welcomeHeading.textContent = `Welcome back, Dr. ${currentUser.full_name || currentUser.username}.`;
     subtitle.textContent = "Review assigned counseling sessions, monitor current status, and open the matching secure chat room for each client.";
 
+    primaryAction.href = "chat.html";
+    primaryAction.textContent = "Open Chat";
+
     statusLabel.textContent = "Therapist workspace";
     statusTitle.textContent = "Psychologist Dashboard";
-    statusCopy.textContent = "You can review pending requests, continue active counseling sessions, and revisit ended sessions without exposing client email.";
+    statusCopy.textContent = "Review assigned clients, accept pending sessions, end active sessions, and continue counseling from secure chat.";
     statusIcon.innerHTML = '<i class="fa-solid fa-user-doctor"></i>';
     statusAction.href = "chat.html";
     statusAction.textContent = "Open Chat";
+    statusAction.classList.remove("is-hidden");
 
     panelOneTitle.textContent = "Pending Sessions";
     panelTwoTitle.textContent = "Active Sessions";
     panelThreeTitle.textContent = "Ended Sessions";
 
-    const pendingSessions = sessions.filter((session) => session.status === "pending");
-    const activeSessions = sessions.filter((session) => session.status === "active");
-    const endedSessions = sessions.filter((session) => session.status === "ended");
+    const pendingSessions = currentSessions.filter((session) => session.status === "pending");
+    const activeSessions = currentSessions.filter((session) => session.status === "active");
+    const endedSessions = currentSessions.filter((session) => session.status === "ended");
 
     renderSessionGroup(
       recentChatsList,
       pendingSessions,
-      rooms,
       "No pending sessions",
       "New counseling requests assigned to you will appear here."
     );
@@ -268,15 +333,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderSessionGroup(
       panelTwoContent,
       activeSessions,
-      rooms,
       "No active sessions",
-      "Sessions become active once you accept and begin counseling."
+      "Accepted counseling sessions will appear here."
     );
 
     renderSessionGroup(
       recommendedList,
       endedSessions,
-      rooms,
       "No ended sessions",
       "Completed counseling sessions will remain listed here for reference."
     );
@@ -286,16 +349,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     hideMessage(roomsMessage);
     hideMessage(psychologistsMessage);
 
-    const currentUser = await window.SafetalkApi.getMe();
+    currentUser = await window.SafetalkApi.getMe();
     window.SafetalkAuth.setCurrentUser(currentUser);
 
-    if (currentUser.role === "psychologist") {
-      const [sessions, rooms] = await Promise.all([
+    const normalizedRole = normalizeRole(currentUser.role);
+
+    if (normalizedRole === "psychologist") {
+      const [sessionsResult, roomsResult] = await Promise.allSettled([
         window.SafetalkApi.listCounselingSessions(),
         window.SafetalkApi.listChatRooms(),
       ]);
 
-      renderPsychologistDashboard(currentUser, sessions, rooms);
+      currentSessions = sessionsResult.status === "fulfilled" ? sessionsResult.value : [];
+      currentRooms = roomsResult.status === "fulfilled" ? roomsResult.value : [];
+
+      renderPsychologistDashboard();
+
+      if (sessionsResult.status === "rejected") {
+        showMessage(roomsMessage, sessionsResult.reason?.message || "Unable to load assigned sessions.");
+      }
+
+      if (roomsResult.status === "rejected") {
+        showMessage(psychologistsMessage, roomsResult.reason?.message || "Unable to load assigned chat rooms.");
+      }
+
       return;
     }
 
@@ -304,7 +381,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.SafetalkApi.getPsychologists(),
     ]);
 
-    renderClientDashboard(currentUser, rooms, psychologists);
+    renderClientDashboard(rooms, psychologists);
   } catch (error) {
     showMessage(roomsMessage, error.message);
     showMessage(psychologistsMessage, error.message);

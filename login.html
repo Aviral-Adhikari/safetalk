@@ -46,9 +46,14 @@
         <div class="form-header">
           <i class="fa-solid fa-lock"></i>
           <div>
-            <h2>Login to Safetalk</h2>
-            <p>Your identity mode is selected after this step.</p>
+            <h2 id="login-card-title">Login to Safetalk</h2>
+            <p id="login-card-copy">Your identity mode is selected after this step.</p>
           </div>
+        </div>
+
+        <div class="auth-mode-toggle" aria-label="Login mode selector">
+          <button class="auth-mode-button is-active" type="button" data-login-mode="client">Client Login</button>
+          <button class="auth-mode-button" type="button" data-login-mode="psychologist">Psychologist Login</button>
         </div>
 
         <label for="username">Username</label>
@@ -64,7 +69,7 @@
         </div>
 
         <div class="form-message is-hidden" id="login-message" aria-live="polite"></div>
-        <button class="btn btn-primary" type="submit">Login and Choose Mode</button>
+        <button class="btn btn-primary" type="submit" id="login-submit-button">Login and Continue</button>
         <p class="auth-switch">New to Safetalk? <a href="register.html">Create an account</a></p>
         <p class="auth-switch">Are you a psychologist? <a href="psychologist-register.html">Apply here</a></p>
       </form>

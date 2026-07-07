@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+  &rsaquo; <a href="{% url 'admin:users_user_changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+  &rsaquo; Pending Applications
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>{{ title }}</h1>
+
+  {% if applications %}
+    <div style="display:grid; gap:16px; margin-top:20px;">
+      {% for application in applications %}
+        <section style="border:1px solid #d9d9d9; border-radius:10px; padding:20px; background:#fff;">
+          <div style="display:flex; justify-content:space-between; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+            <div>
+              <h2 style="margin:0 0 10px;">{{ application.full_name|default:application.username }}</h2>
+              <p style="margin:0 0 6px;"><strong>Username:</strong> {{ application.username }}</p>
+              <p style="margin:0 0 6px;"><strong>Email:</strong> {{ application.email }}</p>
+              <p style="margin:0 0 6px;"><strong>Applied:</strong> {{ application.date_joined }}</p>
+              <p style="margin:0 0 6px;"><strong>Specialization:</strong> {{ application.psychologist_profile.specialization }}</p>
+              <p style="margin:0 0 6px;"><strong>Experience:</strong> {{ application.psychologist_profile.years_of_experience }} years</p>
+              <p style="margin:0 0 6px;"><strong>Languages:</strong> {{ application.psychologist_profile.languages }}</p>
+              <p style="margin:12px 0 6px;"><strong>Bio:</strong></p>
+              <div style="max-width:920px; white-space:pre-wrap;">{{ application.psychologist_profile.bio }}</div>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="button" href="{% url 'admin:users_user_approve_application' application.id %}">Approve</a>
+              <a class="button deletelink" href="{% url 'admin:users_user_reject_application' application.id %}">Reject</a>
+              <a class="button" href="{% url 'admin:users_user_change' application.id %}">Open User</a>
+            </div>
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="margin-top:20px;">There are no pending psychologist applications right now.</p>
+  {% endif %}
+</div>
+{% endblock %}
