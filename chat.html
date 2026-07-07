@@ -40,86 +40,22 @@
 
         <div class="identity-sidebar-note">
           <i class="fa-solid fa-user-secret"></i>
-          <span>Anonymous Mode: anon_84GH21</span>
+          <span id="identity-sidebar-copy">Loading session identity…</span>
         </div>
 
-        <div class="conversation-list">
-          <a class="conversation active" href="#">
-            <span class="profile-avatar">AG</span>
-            <span class="presence-dot"></span>
-            <div>
-              <strong>Dr. Asha Gurung</strong>
-              <p>That is completely okay. We can go slowly.</p>
-            </div>
-          </a>
-          <a class="conversation" href="#">
-            <span class="profile-avatar">SS</span>
-            <span class="presence-dot"></span>
-            <div>
-              <strong>Dr. Suman Shrestha</strong>
-              <p>Try the breathing exercise before sleep.</p>
-            </div>
-          </a>
-          <a class="conversation" href="#">
-            <span class="profile-avatar">NK</span>
-            <span class="presence-dot offline"></span>
-            <div>
-              <strong>Dr. Nabin Karki</strong>
-              <p>We can revisit that memory next session.</p>
-            </div>
-          </a>
-          <a class="conversation" href="#">
-            <span class="profile-avatar">PT</span>
-            <span class="presence-dot"></span>
-            <div>
-              <strong>Dr. Priya Thapa</strong>
-              <p>Relationship counseling session confirmed.</p>
-            </div>
-          </a>
-          <a class="conversation" href="#">
-            <span class="profile-avatar">RA</span>
-            <span class="presence-dot offline"></span>
-            <div>
-              <strong>Dr. Ramesh Adhikari</strong>
-              <p>Stress management plan shared.</p>
-            </div>
-          </a>
-          <a class="conversation" href="#">
-            <span class="profile-avatar">SR</span>
-            <span class="presence-dot"></span>
-            <div>
-              <strong>Dr. Sneha Rai</strong>
-              <p>Let me know how today feels.</p>
-            </div>
-          </a>
-          <a class="conversation" href="#">
-            <span class="profile-avatar">BK</span>
-            <span class="presence-dot"></span>
-            <div>
-              <strong>Dr. Bikash Khadka</strong>
-              <p>Trauma recovery resources are ready.</p>
-            </div>
-          </a>
-          <a class="conversation" href="#">
-            <span class="profile-avatar">AL</span>
-            <span class="presence-dot offline"></span>
-            <div>
-              <strong>Dr. Anisha Lama</strong>
-              <p>Next check-in is available tomorrow.</p>
-            </div>
-          </a>
-        </div>
+        <div class="page-message is-hidden" id="chat-sidebar-message" aria-live="polite"></div>
+        <div class="conversation-list" id="conversation-list"></div>
       </aside>
 
       <section class="chat-window" aria-label="Chat window">
         <header class="chat-header">
           <div class="chat-person">
-            <span class="profile-avatar header-avatar">AG</span>
+            <span class="profile-avatar header-avatar" id="chat-header-avatar">--</span>
             <div>
-              <h1>Dr. Asha Gurung</h1>
+              <h1 id="chat-header-name">Select a conversation</h1>
               <div class="status-line">
                 <span class="online-dot"></span>
-                <span>Online now</span>
+                <span id="chat-header-status">Private counseling room</span>
                 <span class="privacy-label">
                   <i class="fa-solid fa-shield-halved"></i>
                   End-to-End Encrypted
@@ -142,59 +78,17 @@
         </header>
 
         <div class="chat-context">
-          <span><i class="fa-solid fa-user-secret"></i> Psychologist sees: <strong>Anonymous User</strong></span>
+          <span id="chat-context-identity"><i class="fa-solid fa-user-secret"></i> Loading identity mode…</span>
           <span><i class="fa-solid fa-lock"></i> Your account remains internally verified for safety.</span>
         </div>
 
-        <div class="messages" aria-label="Chat messages">
-          <div class="day-divider">Today</div>
+        <div class="messages" aria-label="Chat messages" id="messages-list"></div>
 
-          <article class="message-group doctor-message">
-            <span class="message-author">Dr. Asha Gurung</span>
-            <div class="message-bubble">
-              Hello Anonymous User. This is a private space. What would feel helpful to talk about today?
-            </div>
-            <span class="timestamp">10:02 AM</span>
-          </article>
-
-          <article class="message-group user-message">
-            <span class="message-author">Anonymous User</span>
-            <div class="message-bubble">
-              I have been feeling overwhelmed, and I wanted to speak anonymously first.
-            </div>
-            <span class="timestamp">10:04 AM</span>
-          </article>
-
-          <article class="message-group doctor-message">
-            <span class="message-author">Dr. Asha Gurung</span>
-            <div class="message-bubble">
-              That is completely okay. I only see your anonymous identity, and we can go at your pace.
-            </div>
-            <span class="timestamp">10:05 AM</span>
-          </article>
-
-          <article class="message-group user-message">
-            <span class="message-author">Anonymous User</span>
-            <div class="message-bubble">
-              Can we switch to a voice call if typing becomes hard?
-            </div>
-            <span class="timestamp">10:07 AM</span>
-          </article>
-
-          <article class="message-group doctor-message">
-            <span class="message-author">Dr. Asha Gurung</span>
-            <div class="message-bubble">
-              Yes. You can start with chat, voice call, or video call whenever you feel ready.
-            </div>
-            <span class="timestamp">10:08 AM</span>
-          </article>
-        </div>
-
-        <form class="chat-input" aria-label="Message input">
+        <form class="chat-input" aria-label="Message input" id="chat-form">
           <button class="utility-button" type="button" aria-label="Attach file">
             <i class="fa-solid fa-paperclip"></i>
           </button>
-          <input type="text" placeholder="Message Dr. Asha Gurung as Anonymous User">
+          <input type="text" id="message-input" placeholder="Type your message" required>
           <button class="send-button" type="submit" aria-label="Send message">
             <i class="fa-solid fa-paper-plane"></i>
           </button>
@@ -203,20 +97,20 @@
 
       <aside class="profile-panel" aria-label="Psychologist information">
         <div class="profile-summary-card">
-          <span class="profile-avatar profile-panel-avatar">AG</span>
-          <h2>Dr. Asha Gurung</h2>
-          <p>Depression counseling</p>
+          <span class="profile-avatar profile-panel-avatar" id="profile-panel-avatar">--</span>
+          <h2 id="profile-panel-name">No room selected</h2>
+          <p id="profile-panel-specialization">Choose a conversation to begin.</p>
           <span class="availability-pill"><i class="fa-solid fa-circle"></i> Online now</span>
         </div>
 
         <div class="info-card">
           <h3>Experience</h3>
-          <p>8 years supporting clients through depression, burnout, anxiety, and life transitions.</p>
+          <p id="profile-panel-experience">Experience details load from the counseling session directory.</p>
         </div>
 
         <div class="info-card">
           <h3>Short bio</h3>
-          <p>Warm, structured, and privacy-centered counseling for people who want support at their own pace.</p>
+          <p id="profile-panel-bio">Messages stay inside your secure room until real-time updates are added later.</p>
         </div>
 
         <div class="quick-actions-card">
@@ -292,5 +186,9 @@
       </div>
     </section>
   </main>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/chat.js"></script>
 </body>
 </html>

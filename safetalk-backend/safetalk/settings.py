@@ -7,6 +7,7 @@ import importlib.util
 import os
 import dj_database_url
 from datetime import timedelta
+from corsheaders.defaults import default_headers, default_methods
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 WHITE_NOISE_AVAILABLE = importlib.util.find_spec("whitenoise") is not None
@@ -18,7 +19,7 @@ WHITE_NOISE_AVAILABLE = importlib.util.find_spec("whitenoise") is not None
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
 
     'users',
@@ -59,6 +61,29 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
+_frontend_url = os.environ.get("FRONTEND_URL", "").strip()
+_extra_cors_origins = [
+    origin.strip()
+    for origin in os.environ.get("CORS_EXTRA_ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+]
+
+if _frontend_url:
+    CORS_ALLOWED_ORIGINS.append(_frontend_url)
+
+CORS_ALLOWED_ORIGINS += _extra_cors_origins
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "authorization",
+]
+
+CORS_ALLOW_METHODS = list(default_methods)
+
 
 # =========================
 # MIDDLEWARE
@@ -66,6 +91,7 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 if WHITE_NOISE_AVAILABLE:

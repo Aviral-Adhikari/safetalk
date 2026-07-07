@@ -42,7 +42,7 @@
         </p>
       </div>
 
-      <form class="auth-card" action="identity-mode.html">
+      <form class="auth-card" id="login-form" novalidate>
         <div class="form-header">
           <i class="fa-solid fa-lock"></i>
           <div>
@@ -51,18 +51,19 @@
           </div>
         </div>
 
-        <label for="email">Email address</label>
+        <label for="username">Username</label>
         <div class="input-group">
-          <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="email" placeholder="you@example.com">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="username" placeholder="Enter your username" required>
         </div>
 
         <label for="password">Password</label>
         <div class="input-group">
           <i class="fa-solid fa-key"></i>
-          <input type="password" id="password" placeholder="Enter your password">
+          <input type="password" id="password" placeholder="Enter your password" required>
         </div>
 
+        <div class="form-message is-hidden" id="login-message" aria-live="polite"></div>
         <button class="btn btn-primary" type="submit">Login and Choose Mode</button>
         <p class="auth-switch">New to Safetalk? <a href="register.html">Create an account</a></p>
       </form>
@@ -83,5 +84,9 @@
       <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
     </div>
   </footer>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>

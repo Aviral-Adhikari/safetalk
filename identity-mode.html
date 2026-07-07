@@ -35,27 +35,32 @@
     <section class="container identity-header">
       <span class="section-label">Step 2: Choose how you appear</span>
       <h1>Select your session identity.</h1>
-      <p>
+      <p id="identity-page-copy">
         Safetalk keeps your account internally for safety. This choice controls
         what psychologists see inside counseling sessions.
       </p>
     </section>
 
+    <section class="container identity-selection-note">
+      <div class="page-message is-hidden" id="identity-message" aria-live="polite"></div>
+      <div class="selection-summary" id="selected-psychologist-summary">Choose a psychologist before starting a session.</div>
+    </section>
+
     <section class="container identity-grid">
       <article class="identity-card anonymous-choice">
         <div class="identity-icon"><i class="fa-solid fa-mask"></i></div>
-        <span class="mode-label">Generated ID: anon_84GH21</span>
+        <span class="mode-label" id="anonymous-mode-label">Generated alias will appear here</span>
         <h2>Continue Anonymously</h2>
         <p>Talk to psychologists without revealing your identity. Psychologists will see you as Anonymous User.</p>
-        <a class="btn btn-primary btn-large" href="dashboard.html">Start Anonymous Session</a>
+        <button class="btn btn-primary btn-large" id="anonymous-session-button" type="button">Start Anonymous Session</button>
       </article>
 
       <article class="identity-card known-choice">
         <div class="identity-icon"><i class="fa-solid fa-user-check"></i></div>
-        <span class="mode-label">Visible name: Aarav Koirala</span>
+        <span class="mode-label" id="known-mode-label">Visible name will appear here</span>
         <h2>Continue With Identity</h2>
         <p>Your name will be visible to psychologists. Use this mode when you want your provider to know who you are.</p>
-        <a class="btn btn-secondary btn-large" href="dashboard.html">Continue With Identity</a>
+        <button class="btn btn-secondary btn-large" id="known-session-button" type="button">Continue With Identity</button>
       </article>
     </section>
   </main>
@@ -74,5 +79,9 @@
       <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
     </div>
   </footer>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/identity-mode.js"></script>
 </body>
 </html>
