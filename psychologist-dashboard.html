@@ -20,8 +20,8 @@
         <a href="#pending-requests">Pending Sessions</a>
         <a href="#active-sessions">Active Sessions</a>
         <a href="#completed-sessions">Ended Sessions</a>
-        <a href="#availability-panel">Availability</a>
-        <a href="about.html">Profile</a>
+        <a href="psychologist-schedule.html">Schedule</a>
+        <a href="psychologist-profile.html">Profile</a>
       </div>
       <div class="nav-actions"><a class="login-link" href="#" id="logout-link">Logout</a><a class="btn btn-primary btn-small" href="chat.html" id="dashboard-primary-action">Open Chat</a></div>
     </nav>
@@ -73,6 +73,18 @@
         <p id="identity-status-copy">Client requests and counseling sessions assigned to you appear below.</p>
       </div>
       <a class="btn btn-secondary" href="chat.html" id="identity-status-action">Open Chat</a>
+    </section>
+
+    <section class="container dashboard-panel therapist-appointments-panel" id="appointment-requests">
+      <div class="section-header-row">
+        <div>
+          <span class="section-label">Upcoming Bookings</span>
+          <h2>Appointment Requests</h2>
+        </div>
+        <a class="btn btn-secondary btn-small" href="psychologist-schedule.html">Manage Schedule</a>
+      </div>
+      <div class="page-message is-hidden" id="dashboard-appointments-message" aria-live="polite"></div>
+      <div id="psychologist-appointments-list"></div>
     </section>
 
     <section class="container therapist-session-grid">

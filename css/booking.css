@@ -1,0 +1,189 @@
+.booking-page-body {
+  background: var(--color-background);
+}
+
+.booking-page {
+  padding: 64px 0 88px;
+}
+
+.booking-header h1 {
+  max-width: 820px;
+  margin-top: 14px;
+  font-size: clamp(2.35rem, 4.6vw, 4.25rem);
+}
+
+.booking-header p {
+  max-width: 680px;
+  margin-top: 18px;
+  color: var(--color-text-secondary);
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 42px;
+  align-items: start;
+}
+
+.booking-psychologist-card,
+.booking-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.booking-psychologist-card {
+  align-self: start;
+  display: grid;
+  gap: 12px;
+  padding: 28px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.booking-psychologist-card .profile-avatar {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  overflow: hidden;
+  font-size: 1.6rem;
+}
+
+.booking-psychologist-card .profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.booking-psychologist-card h2 {
+  max-width: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.booking-psychologist-card p {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.booking-card {
+  display: grid;
+  gap: 20px;
+  padding: 28px;
+  min-width: 0;
+}
+
+.booking-card-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.booking-card h2 {
+  margin-top: 8px;
+  font-size: 1.85rem;
+  letter-spacing: 0;
+}
+
+.slot-choice-list {
+  display: grid;
+  gap: 12px;
+  min-height: 58px;
+}
+
+.slot-choice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slot-choice:hover,
+.slot-choice:has(input:checked) {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.slot-choice input {
+  width: 18px;
+  height: 18px;
+}
+
+.slot-choice strong {
+  display: block;
+}
+
+.slot-choice span {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.booking-field {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.booking-field select,
+.booking-field textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  outline: 0;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.booking-field select {
+  min-height: 52px;
+  padding: 0 16px;
+}
+
+.booking-field textarea {
+  min-height: 148px;
+  resize: vertical;
+  padding: 14px 16px;
+}
+
+.booking-card .btn-primary {
+  width: 100%;
+}
+
+.booking-psychologist-card .btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (max-width: 880px) {
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .booking-page {
+    padding: 48px 0 72px;
+  }
+
+  .booking-psychologist-card,
+  .booking-card {
+    padding: 22px;
+  }
+
+  .booking-card-heading {
+    flex-direction: column;
+  }
+}

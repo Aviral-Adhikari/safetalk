@@ -127,6 +127,17 @@
     return request("/api/psychologists/");
   }
 
+  async function getPsychologistMe() {
+    return request("/api/psychologists/me/");
+  }
+
+  async function updatePsychologistMe(payload) {
+    return request("/api/psychologists/me/", {
+      method: "PATCH",
+      body: payload,
+    });
+  }
+
   async function createCounselingSession(payload) {
     return request("/api/anonymous-sessions/", {
       method: "POST",
@@ -164,6 +175,52 @@
     });
   }
 
+  async function listMyAppointmentSlots() {
+    return request("/api/appointments/my-slots/");
+  }
+
+  async function createMyAppointmentSlot(payload) {
+    return request("/api/appointments/my-slots/", {
+      method: "POST",
+      body: payload,
+    });
+  }
+
+  async function updateMyAppointmentSlot(slotId, payload) {
+    return request(`/api/appointments/my-slots/${slotId}/`, {
+      method: "PATCH",
+      body: payload,
+    });
+  }
+
+  async function deleteMyAppointmentSlot(slotId) {
+    return request(`/api/appointments/my-slots/${slotId}/`, {
+      method: "DELETE",
+    });
+  }
+
+  async function listPsychologistSlots(psychologistId) {
+    return request(`/api/appointments/psychologists/${psychologistId}/slots/`);
+  }
+
+  async function bookAppointment(payload) {
+    return request("/api/appointments/book/", {
+      method: "POST",
+      body: payload,
+    });
+  }
+
+  async function listAppointments() {
+    return request("/api/appointments/");
+  }
+
+  async function updateAppointmentStatus(appointmentId, payload) {
+    return request(`/api/appointments/${appointmentId}/status/`, {
+      method: "PATCH",
+      body: payload,
+    });
+  }
+
   window.SafetalkApi = {
     request,
     register,
@@ -172,6 +229,8 @@
     refresh,
     getMe,
     getPsychologists,
+    getPsychologistMe,
+    updatePsychologistMe,
     createCounselingSession,
     listCounselingSessions,
     updateCounselingSessionStatus,
@@ -179,5 +238,13 @@
     getChatRoom,
     getRoomMessages,
     sendRoomMessage,
+    listMyAppointmentSlots,
+    createMyAppointmentSlot,
+    updateMyAppointmentSlot,
+    deleteMyAppointmentSlot,
+    listPsychologistSlots,
+    bookAppointment,
+    listAppointments,
+    updateAppointmentStatus,
   };
 })();

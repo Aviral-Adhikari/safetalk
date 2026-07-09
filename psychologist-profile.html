@@ -3,63 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dr. Asha Gurung | Safetalk</title>
+  <title>My Psychologist Profile | Safetalk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/psychologists.css">
+  <link rel="stylesheet" href="css/psychologist-profile.css">
 </head>
-<body>
+<body class="psychologist-profile-page">
   <header class="site-header">
-    <nav class="navbar">
+    <nav class="navbar therapist-navbar">
       <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>Safetalk</span></a>
-      <div class="nav-links"><a href="index.html">Home</a><a href="psychologists.html">Psychologists</a><a href="index.html#how-it-works">How it Works</a><a href="about.html">About</a></div>
-      <div class="nav-actions"><a class="login-link" href="login.html">Login</a><a class="btn btn-primary btn-small" href="login.html">Start Anonymously</a></div>
+      <div class="nav-links">
+        <a href="psychologist-dashboard.html">Therapist Dashboard</a>
+        <a href="psychologist-dashboard.html#pending-requests">Pending Sessions</a>
+        <a href="psychologist-dashboard.html#active-sessions">Active Sessions</a>
+        <a href="psychologist-dashboard.html#completed-sessions">Ended Sessions</a>
+        <a href="psychologist-schedule.html">Schedule</a>
+        <a href="psychologist-profile.html">Profile</a>
+      </div>
+      <div class="nav-actions"><a class="login-link" href="#" id="logout-link">Logout</a><a class="btn btn-primary btn-small" href="chat.html">Open Chat</a></div>
     </nav>
   </header>
 
-  <main class="profile-page">
-    <section class="container profile-layout">
-      <aside class="profile-card-large">
-        <span class="profile-avatar profile-avatar-large">AG</span>
-        <h1>Dr. Asha Gurung</h1>
-        <p class="specialization">Depression counseling</p>
-        <p class="experience">8 years experience</p>
-        <div class="profile-actions">
-          <a class="btn btn-primary" href="chat.html">Start Chat</a>
-          <a class="btn btn-secondary" href="dashboard.html">Schedule Session</a>
+  <main class="profile-management">
+    <section class="container profile-management-header">
+      <span class="section-label">Professional Profile</span>
+      <h1>Manage how clients see you.</h1>
+      <p>Update your professional profile, availability, and client-facing information without needing admin support.</p>
+    </section>
+
+    <section class="container profile-management-grid">
+      <aside class="profile-preview-card">
+        <div class="profile-photo-preview" id="profile-photo-preview">
+          <span id="profile-photo-initials">--</span>
         </div>
+        <h2 id="preview-name">Loading profile...</h2>
+        <p id="preview-specialization">Professional specialization</p>
+        <span class="availability-badge" id="preview-availability"><i class="fa-solid fa-circle"></i> Loading</span>
+        <dl class="profile-facts">
+          <div><dt>Email</dt><dd id="readonly-email">--</dd></div>
+          <div><dt>Role</dt><dd id="readonly-role">--</dd></div>
+          <div><dt>Verification</dt><dd id="readonly-verification">--</dd></div>
+          <div><dt>Joined</dt><dd id="readonly-joined">--</dd></div>
+        </dl>
       </aside>
 
-      <section class="profile-detail">
-        <span class="section-label">Psychologist profile</span>
-        <h2>Warm, structured support for mood, stress, and life transitions.</h2>
-        <p>
-          Dr. Asha Gurung helps clients understand emotional patterns, build practical coping
-          skills, and move through difficult seasons with privacy and care. Her online sessions
-          are calm, collaborative, and paced around each client's comfort.
-        </p>
-
-        <div class="expertise-grid">
-          <div><i class="fa-solid fa-brain"></i><span>Depression counseling</span></div>
-          <div><i class="fa-solid fa-heart-pulse"></i><span>Anxiety therapy</span></div>
-          <div><i class="fa-solid fa-hand-holding-heart"></i><span>Stress management</span></div>
-          <div><i class="fa-solid fa-people-arrows"></i><span>Relationship counseling</span></div>
+      <form class="profile-edit-card" id="psychologist-profile-form">
+        <div class="form-card-heading">
+          <div>
+            <span class="section-label">Editable Details</span>
+            <h2>Professional information</h2>
+          </div>
+          <label class="availability-switch">
+            <input type="checkbox" id="is-available">
+            <span></span>
+            <strong>Available for New Sessions</strong>
+          </label>
         </div>
-      </section>
+
+        <div class="page-message is-hidden" id="profile-message" aria-live="polite"></div>
+
+        <div class="field-grid">
+          <label class="form-field">
+            <span>Profile Photo</span>
+            <input type="file" id="profile-photo" accept="image/png,image/jpeg,image/webp">
+            <small>JPG, PNG, or WEBP. Preview appears before saving.</small>
+          </label>
+
+          <label class="form-field">
+            <span>Specialization</span>
+            <input type="text" id="specialization" maxlength="255" required>
+          </label>
+
+          <label class="form-field">
+            <span>Years of Experience</span>
+            <input type="number" id="years-of-experience" min="0" required>
+          </label>
+
+          <label class="form-field">
+            <span>Languages</span>
+            <input type="text" id="languages" placeholder="Nepali, English" required>
+            <small>Use a comma separated list.</small>
+          </label>
+        </div>
+
+        <label class="form-field">
+          <span>Bio / About Me</span>
+          <textarea id="bio" rows="8" maxlength="1000" required></textarea>
+          <small><span id="bio-count">0</span>/1000 characters</small>
+        </label>
+
+        <div class="profile-form-actions">
+          <a class="btn btn-secondary" href="psychologist-dashboard.html">Back to Dashboard</a>
+          <button class="btn btn-primary" type="submit" id="save-profile-button">Save Profile</button>
+        </div>
+      </form>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container footer-grid">
-      <a class="brand footer-brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>Safetalk</span></a>
-      <div class="footer-links"><a href="about.html">Privacy Policy</a><a href="about.html">Terms of Service</a><a href="about.html">Contact</a></div>
-      <p class="copyright">Copyright 2026 Safetalk. All rights reserved.</p>
-    </div>
-  </footer>
   <script src="js/auth.js"></script>
   <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/psychologist-profile.js"></script>
 </body>
 </html>

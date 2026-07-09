@@ -219,6 +219,23 @@
   font-size: 1.7rem;
 }
 
+.section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.section-header-row h2 {
+  margin-bottom: 0;
+}
+
+.client-appointments-panel,
+.therapist-appointments-panel {
+  margin-top: 28px;
+}
+
 .recent-chats {
   grid-row: span 2;
 }
@@ -354,6 +371,21 @@
 .session-status-badge.status-active {
   background: var(--color-success-bg);
   color: var(--color-success-text);
+}
+
+.session-status-badge.status-confirmed {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.session-status-badge.status-cancelled {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
+}
+
+.session-status-badge.status-completed {
+  background: var(--color-secondary-bg);
+  color: var(--color-secondary);
 }
 
 .session-status-badge.status-ended {

@@ -1,0 +1,171 @@
+.psychologist-schedule-page {
+  background: var(--color-background);
+}
+
+.therapist-navbar {
+  width: min(1320px, calc(100% - 40px));
+}
+
+.therapist-navbar .nav-links {
+  gap: 22px;
+}
+
+.therapist-navbar .nav-links a:nth-child(5) {
+  color: var(--color-primary);
+}
+
+.schedule-page {
+  padding: 78px 0 96px;
+}
+
+.schedule-header h1 {
+  max-width: 860px;
+  margin-top: 14px;
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+}
+
+.schedule-header p {
+  max-width: 680px;
+  margin-top: 18px;
+  color: var(--color-text-secondary);
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 42px;
+}
+
+.schedule-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.slot-form-card {
+  align-self: start;
+  display: grid;
+  gap: 16px;
+  padding: 28px;
+}
+
+.slot-form-card h2,
+.slots-list-card h2 {
+  margin-top: 8px;
+  font-size: 1.9rem;
+}
+
+.slot-form-card label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.slot-form-card input {
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  outline: 0;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  font: inherit;
+}
+
+.slot-form-card input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(91, 110, 245, 0.12);
+}
+
+.slots-list-card {
+  padding: 28px;
+}
+
+.section-header-row,
+.slot-row-top,
+.slot-row-actions {
+  display: flex;
+  align-items: center;
+}
+
+.section-header-row {
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.slot-count {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--color-icon-bg);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.slots-list {
+  display: grid;
+  gap: 14px;
+}
+
+.slot-row {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.slot-row.is-booked {
+  border-left-color: var(--color-primary);
+  background: var(--color-surface-hover);
+}
+
+.slot-row-top {
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.slot-row strong {
+  font-size: 1.05rem;
+}
+
+.slot-row p {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.slot-badge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-weight: 700;
+}
+
+.slot-row.is-booked .slot-badge {
+  background: var(--color-secondary-bg);
+  color: var(--color-secondary);
+}
+
+.slot-row-actions {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .section-header-row,
+  .slot-row-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

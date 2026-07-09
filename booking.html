@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment | Safetalk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/booking.css">
+</head>
+<body class="booking-page-body">
+  <header class="site-header">
+    <nav class="navbar client-navbar">
+      <a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>Safetalk</span></a>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="psychologists.html">Find Psychologist</a>
+        <a href="chat.html">My Sessions</a>
+        <a href="about.html">Profile</a>
+      </div>
+      <div class="nav-actions"><a class="login-link" href="#" id="logout-link">Logout</a></div>
+    </nav>
+  </header>
+
+  <main class="booking-page">
+    <section class="container booking-header">
+      <span class="section-label">Book a Counseling Appointment</span>
+      <h1>Choose a time that works for you.</h1>
+      <p id="booking-copy">Select an available time slot and send your appointment request.</p>
+    </section>
+
+    <section class="container booking-grid">
+      <aside class="booking-psychologist-card">
+        <span class="profile-avatar" id="booking-avatar">--</span>
+        <h2 id="booking-psychologist-name">Selected psychologist</h2>
+        <p id="booking-specialization">Specialization</p>
+        <p id="booking-experience">Experience</p>
+        <p id="booking-languages">Languages</p>
+        <a class="btn btn-secondary" href="psychologists.html">Choose Different Psychologist</a>
+      </aside>
+
+      <form class="booking-card" id="booking-form">
+        <div class="booking-card-heading">
+          <div>
+            <span class="section-label">Appointment Request</span>
+            <h2>Available times</h2>
+          </div>
+        </div>
+
+        <div class="page-message is-hidden" id="booking-message" aria-live="polite"></div>
+        <div class="slot-choice-list" id="slot-choice-list"></div>
+
+        <label class="booking-field">
+          <span>Identity mode for this appointment</span>
+          <select id="booking-identity-mode">
+            <option value="anonymous">Anonymous</option>
+            <option value="known">Known</option>
+          </select>
+        </label>
+
+        <label class="booking-field">
+          <span>Optional note</span>
+          <textarea id="booking-notes" maxlength="1000" rows="5" placeholder="Share anything you want the psychologist to know before confirming."></textarea>
+        </label>
+
+        <button class="btn btn-primary" type="submit" id="confirm-booking-button">Confirm Booking</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>

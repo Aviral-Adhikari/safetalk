@@ -18,10 +18,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const panelThreeTitle = document.getElementById("panel-three-title");
   const roomsMessage = document.getElementById("dashboard-rooms-message");
   const psychologistsMessage = document.getElementById("dashboard-psychologists-message");
+  const appointmentsMessage = document.getElementById("dashboard-appointments-message");
+  const appointmentsList = document.getElementById("client-appointments-list");
 
   let currentUser = null;
   let currentSessions = [];
   let currentRooms = [];
+  let currentAppointments = [];
 
   logoutLink.addEventListener("click", (event) => {
     event.preventDefault();
@@ -37,6 +40,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   function hideMessage(element) {
     element.textContent = "";
     element.classList.add("is-hidden");
+  }
+
+  function showAppointmentsMessage(text, type) {
+    appointmentsMessage.textContent = text;
+    appointmentsMessage.classList.remove("is-hidden", "is-error", "is-success");
+    appointmentsMessage.classList.add(type === "success" ? "is-success" : "is-error");
   }
 
   function createEmptyState(title, text) {
@@ -141,7 +150,79 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  function renderClientDashboard(rooms, psychologists) {
+  function renderAppointments(appointments) {
+    appointmentsList.innerHTML = "";
+
+    if (!appointments.length) {
+      appointmentsList.appendChild(
+        createEmptyState(
+          "No appointments yet",
+          "Book a counseling appointment with an available psychologist when you are ready."
+        )
+      );
+      return;
+    }
+
+    const stack = document.createElement("div");
+    stack.className = "session-stack";
+
+    appointments.forEach((appointment) => {
+      const card = document.createElement("article");
+      card.className = `session-card client-session-card status-${appointment.status}`;
+      card.innerHTML = `
+        <div class="session-card-top">
+          <div>
+            <strong>${appointment.psychologist_name}</strong>
+            <p>${appointment.psychologist_specialization}</p>
+          </div>
+          <span class="session-status-badge status-${appointment.status}">${appointment.status}</span>
+        </div>
+        <div class="session-card-meta">
+          <span>Date: ${formatCreatedDate(`${appointment.appointment_date}T00:00:00`)}</span>
+          <span>Time: ${appointment.start_time} - ${appointment.end_time}</span>
+          <span>Identity mode: ${formatIdentityLabel(appointment.identity_mode)}</span>
+        </div>
+        <div class="session-card-actions"></div>
+      `;
+
+      const actions = card.querySelector(".session-card-actions");
+      if (appointment.status === "confirmed" && appointment.chat_room_id) {
+        const chatButton = document.createElement("button");
+        chatButton.type = "button";
+        chatButton.className = "btn btn-primary btn-small";
+        chatButton.textContent = "Open Chat";
+        chatButton.addEventListener("click", () => {
+          window.SafetalkAuth.setActiveRoomId(appointment.chat_room_id);
+          window.location.href = `chat.html?room=${appointment.chat_room_id}`;
+        });
+        actions.appendChild(chatButton);
+      }
+
+      if (appointment.status === "pending" || appointment.status === "confirmed") {
+        const cancelButton = document.createElement("button");
+        cancelButton.type = "button";
+        cancelButton.className = "btn btn-secondary btn-small";
+        cancelButton.textContent = "Cancel Appointment";
+        cancelButton.addEventListener("click", async () => {
+          try {
+            await window.SafetalkApi.updateAppointmentStatus(appointment.id, { status: "cancelled" });
+            currentAppointments = await window.SafetalkApi.listAppointments();
+            renderAppointments(currentAppointments);
+            showAppointmentsMessage("Appointment cancelled.", "success");
+          } catch (error) {
+            showAppointmentsMessage(error.message, "error");
+          }
+        });
+        actions.appendChild(cancelButton);
+      }
+
+      stack.appendChild(card);
+    });
+
+    appointmentsList.appendChild(stack);
+  }
+
+  function renderClientDashboard(rooms, psychologists, appointments) {
     welcomeHeading.textContent = `Welcome back, ${currentUser.full_name || currentUser.username}.`;
     subtitle.textContent = `Your account is active as ${currentUser.username}. Find support, choose anonymous or known counseling, and return to your sessions anytime.`;
 
@@ -182,6 +263,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderRooms(rooms);
     renderPsychologists(psychologists);
+    renderAppointments(appointments);
   }
 
   function findRoomForSession(sessionId) {
@@ -359,12 +441,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const [rooms, psychologists] = await Promise.all([
+    const [rooms, psychologists, appointments] = await Promise.all([
       window.SafetalkApi.listChatRooms(),
       window.SafetalkApi.getPsychologists(),
+      window.SafetalkApi.listAppointments(),
     ]);
 
-    renderClientDashboard(rooms, psychologists);
+    currentAppointments = appointments;
+    renderClientDashboard(rooms, psychologists, appointments);
   } catch (error) {
     showMessage(roomsMessage, error.message);
     showMessage(psychologistsMessage, error.message);

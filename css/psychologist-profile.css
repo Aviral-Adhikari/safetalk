@@ -1,0 +1,264 @@
+.psychologist-profile-page {
+  background: var(--color-background);
+}
+
+.therapist-navbar {
+  width: min(1320px, calc(100% - 40px));
+}
+
+.therapist-navbar .nav-links {
+  gap: 22px;
+}
+
+.therapist-navbar .nav-links a:last-child {
+  color: var(--color-primary);
+}
+
+.profile-management {
+  padding: 78px 0 96px;
+}
+
+.profile-management-header h1 {
+  max-width: 840px;
+  margin-top: 14px;
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+}
+
+.profile-management-header p {
+  max-width: 680px;
+  margin-top: 18px;
+  color: var(--color-text-secondary);
+}
+
+.profile-management-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 42px;
+}
+
+.profile-preview-card,
+.profile-edit-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-preview-card {
+  align-self: start;
+  padding: 30px;
+  text-align: center;
+}
+
+.profile-photo-preview {
+  display: grid;
+  place-items: center;
+  width: 152px;
+  height: 152px;
+  margin: 0 auto 24px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  background: var(--color-icon-bg);
+  color: var(--color-primary);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.profile-photo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-preview-card h2 {
+  font-size: 1.7rem;
+}
+
+.profile-preview-card p {
+  margin-top: 8px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-weight: 700;
+}
+
+.availability-badge.is-unavailable {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
+}
+
+.profile-facts {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+  text-align: left;
+}
+
+.profile-facts div {
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+}
+
+.profile-facts dt {
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.profile-facts dd {
+  margin-top: 4px;
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.profile-edit-card {
+  display: grid;
+  gap: 22px;
+  padding: 30px;
+}
+
+.form-card-heading,
+.profile-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.form-card-heading h2 {
+  margin-top: 8px;
+  font-size: 2rem;
+}
+
+.availability-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-background);
+  cursor: pointer;
+}
+
+.availability-switch input {
+  position: absolute;
+  opacity: 0;
+}
+
+.availability-switch span {
+  position: relative;
+  width: 52px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--color-border-strong);
+  transition: all 0.3s ease;
+}
+
+.availability-switch span::after {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  content: "";
+  transition: all 0.3s ease;
+}
+
+.availability-switch input:checked + span {
+  background: var(--color-accent);
+}
+
+.availability-switch input:checked + span::after {
+  transform: translateX(22px);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-field {
+  display: grid;
+  gap: 8px;
+}
+
+.form-field span {
+  font-weight: 700;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  outline: 0;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-field input {
+  min-height: 52px;
+  padding: 0 16px;
+}
+
+.form-field textarea {
+  resize: vertical;
+  padding: 14px 16px;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(91, 110, 245, 0.12);
+}
+
+.form-field small {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+@media (max-width: 980px) {
+  .profile-management-grid,
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card-heading,
+  .profile-form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .profile-management {
+    padding: 56px 0;
+  }
+
+  .profile-preview-card,
+  .profile-edit-card {
+    padding: 22px;
+  }
+}

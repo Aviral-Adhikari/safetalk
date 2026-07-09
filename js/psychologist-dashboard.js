@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const pendingList = document.getElementById("pending-sessions-list");
   const activeList = document.getElementById("active-sessions-list");
   const endedList = document.getElementById("ended-sessions-list");
+  const appointmentsMessage = document.getElementById("dashboard-appointments-message");
+  const appointmentsList = document.getElementById("psychologist-appointments-list");
   const pendingCount = document.getElementById("pending-sessions-count");
   const activeCount = document.getElementById("active-sessions-count");
   const endedCount = document.getElementById("ended-sessions-count");
@@ -17,6 +19,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let currentSessions = [];
   let currentRooms = [];
+  let currentAppointments = [];
+  let currentProfile = null;
 
   logoutLink.addEventListener("click", (event) => {
     event.preventDefault();
@@ -39,6 +43,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     wrapper.className = "empty-state-card";
     wrapper.innerHTML = `<strong>${title}</strong><span>${text}</span>`;
     return wrapper;
+  }
+
+  function showAppointmentsMessage(text, type) {
+    appointmentsMessage.textContent = text;
+    appointmentsMessage.classList.remove("is-hidden", "is-error", "is-success");
+    appointmentsMessage.classList.add(type === "success" ? "is-success" : "is-error");
   }
 
   function formatStatusLabel(statusValue) {
@@ -80,13 +90,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function reloadDashboard() {
-    const [sessions, rooms] = await Promise.all([
+    const [sessions, rooms, appointments] = await Promise.all([
       window.SafetalkApi.listCounselingSessions(),
       window.SafetalkApi.listChatRooms(),
+      window.SafetalkApi.listAppointments(),
     ]);
 
     currentSessions = sessions;
     currentRooms = rooms;
+    currentAppointments = appointments;
     renderDashboard();
   }
 
@@ -197,6 +209,104 @@ document.addEventListener("DOMContentLoaded", async () => {
     container.appendChild(stack);
   }
 
+  function openAppointmentChat(appointment) {
+    if (!appointment.chat_room_id) {
+      showAppointmentsMessage("Chat becomes available after this appointment is confirmed.", "error");
+      return;
+    }
+
+    window.SafetalkAuth.setActiveRoomId(appointment.chat_room_id);
+    window.location.href = `chat.html?room=${appointment.chat_room_id}`;
+  }
+
+  async function updateAppointmentStatus(appointmentId, status) {
+    await window.SafetalkApi.updateAppointmentStatus(appointmentId, { status });
+    await reloadDashboard();
+  }
+
+  function renderAppointments() {
+    appointmentsList.innerHTML = "";
+    const relevant = currentAppointments.filter((appointment) =>
+      appointment.status === "pending" || appointment.status === "confirmed"
+    );
+
+    if (!relevant.length) {
+      appointmentsList.appendChild(
+        createEmptyState(
+          "No upcoming appointment requests",
+          "Client booking requests and confirmed appointments will appear here."
+        )
+      );
+      return;
+    }
+
+    const stack = document.createElement("div");
+    stack.className = "session-stack";
+
+    relevant.forEach((appointment) => {
+      const card = document.createElement("article");
+      card.className = `session-card psychologist-session-card status-${appointment.status}`;
+      card.innerHTML = `
+        <div class="session-card-top">
+          <div>
+            <strong>${appointment.client_identity?.display_name || "Client"}</strong>
+            <p>Appointment Request - ${appointment.identity_mode === "known" ? "Known" : "Anonymous"} identity</p>
+          </div>
+          <span class="session-status-badge status-${appointment.status}">${appointment.status}</span>
+        </div>
+        <div class="session-card-meta">
+          <span>Date: ${formatCreatedDate(`${appointment.appointment_date}T00:00:00`)}</span>
+          <span>Time: ${appointment.start_time} - ${appointment.end_time}</span>
+          <span>Notes: ${appointment.notes || "No note added"}</span>
+        </div>
+        <div class="session-card-actions"></div>
+      `;
+
+      const actions = card.querySelector(".session-card-actions");
+      if (appointment.status === "pending") {
+        const confirmButton = document.createElement("button");
+        confirmButton.type = "button";
+        confirmButton.className = "btn btn-primary btn-small";
+        confirmButton.textContent = "Confirm Appointment";
+        confirmButton.addEventListener("click", async () => {
+          try {
+            await updateAppointmentStatus(appointment.id, "confirmed");
+            showAppointmentsMessage("Appointment confirmed and counseling session created.", "success");
+          } catch (error) {
+            showAppointmentsMessage(error.message, "error");
+          }
+        });
+        actions.appendChild(confirmButton);
+      }
+
+      if (appointment.status === "confirmed") {
+        const chatButton = document.createElement("button");
+        chatButton.type = "button";
+        chatButton.className = "btn btn-secondary btn-small";
+        chatButton.textContent = "Open Chat";
+        chatButton.addEventListener("click", () => openAppointmentChat(appointment));
+        actions.appendChild(chatButton);
+      }
+
+      const cancelButton = document.createElement("button");
+      cancelButton.type = "button";
+      cancelButton.className = "btn btn-secondary btn-small";
+      cancelButton.textContent = "Cancel";
+      cancelButton.addEventListener("click", async () => {
+        try {
+          await updateAppointmentStatus(appointment.id, "cancelled");
+          showAppointmentsMessage("Appointment cancelled and slot released.", "success");
+        } catch (error) {
+          showAppointmentsMessage(error.message, "error");
+        }
+      });
+      actions.appendChild(cancelButton);
+      stack.appendChild(card);
+    });
+
+    appointmentsList.appendChild(stack);
+  }
+
   function renderDashboard() {
     const pendingSessions = currentSessions.filter((session) => session.status === "pending");
     const activeSessions = currentSessions.filter((session) => session.status === "active");
@@ -205,7 +315,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     pendingCount.textContent = pendingSessions.length;
     activeCount.textContent = activeSessions.length;
     endedCount.textContent = endedSessions.length;
-    availabilityStatus.textContent = "Available";
+    availabilityStatus.textContent = currentProfile?.is_available ? "● Available" : "● Unavailable";
 
     statusTitle.textContent = `${pendingSessions.length} client request${pendingSessions.length === 1 ? "" : "s"} waiting`;
     statusCopy.textContent = "Only client requests and counseling sessions assigned to your psychologist profile are shown here.";
@@ -228,6 +338,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       "No completed sessions",
       "Completed counseling sessions remain available for review."
     );
+    renderAppointments();
   }
 
   try {
@@ -248,7 +359,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    welcomeHeading.textContent = `Welcome back, ${currentUser.full_name || currentUser.username}.`;
+    currentProfile = await window.SafetalkApi.getPsychologistMe();
+
+    welcomeHeading.textContent = `Hello, Dr. ${currentUser.full_name || currentUser.username}.`;
     subtitle.textContent = "Manage client requests, active counseling sessions, and completed conversations from one focused therapist workspace.";
 
     await reloadDashboard();

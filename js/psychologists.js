@@ -24,21 +24,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   function renderCard(psychologist) {
     const card = document.createElement("article");
     card.className = "directory-card";
+    const avatarMarkup = psychologist.profile_photo
+      ? `<img src="${psychologist.profile_photo}" alt="${psychologist.full_name} profile photo">`
+      : initialsFromName(psychologist.full_name);
     card.innerHTML = `
       <div class="profile-top">
-        <span class="profile-avatar">${initialsFromName(psychologist.full_name)}</span>
+        <span class="profile-avatar directory-avatar">${avatarMarkup}</span>
         <span class="availability">${psychologist.is_available ? "Available" : "Unavailable"}</span>
       </div>
       <h3>${psychologist.full_name}</h3>
       <p class="specialization">${psychologist.specialization}</p>
       <p class="experience">${psychologist.years_of_experience} years experience</p>
+      <p class="languages"><i class="fa-solid fa-language"></i> ${psychologist.languages}</p>
+      <p class="profile-bio">${psychologist.bio}</p>
       <div class="card-actions">
-        <a class="btn btn-secondary" href="psychologist-profile.html">View Profile</a>
+        <button class="btn btn-secondary" type="button" data-action="book">Book Appointment</button>
         <button class="btn btn-card" type="button">Choose Psychologist</button>
       </div>
     `;
 
-    const selectButton = card.querySelector("button");
+    const bookButton = card.querySelector('[data-action="book"]');
+    const selectButton = card.querySelector(".btn-card");
+
+    bookButton.addEventListener("click", () => {
+      window.SafetalkAuth.setSelectedPsychologist(psychologist);
+      window.location.href = "booking.html";
+    });
+
     selectButton.addEventListener("click", () => {
       window.SafetalkAuth.setSelectedPsychologist(psychologist);
       window.location.href = "identity-mode.html";
