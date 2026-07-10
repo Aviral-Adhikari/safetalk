@@ -1,5 +1,6 @@
 (function () {
-  const API_BASE_URL = "https://safetalk-8sxp.onrender.com";
+  const API_BASE_URL = window.SafetalkConfig.API_BASE_URL;
+  const DEFAULT_TIMEOUT_MS = window.SafetalkConfig.DEFAULT_TIMEOUT_MS || 30000;
   const STORAGE_KEYS = {
     access: "safetalk_access_token",
     refresh: "safetalk_refresh_token",
@@ -103,19 +104,40 @@
     return authHeaders;
   }
 
+  async function fetchWithTimeout(url, options, timeoutMs) {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      return await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+    } finally {
+      window.clearTimeout(timeoutId);
+    }
+  }
+
   async function refreshAccessToken() {
     const refreshToken = getRefreshToken();
     if (!refreshToken) {
       return false;
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/auth/refresh/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ refresh: refreshToken }),
-    });
+    let response;
+
+    try {
+      response = await fetchWithTimeout(`${API_BASE_URL}/api/auth/refresh/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refresh: refreshToken }),
+      }, DEFAULT_TIMEOUT_MS);
+    } catch (error) {
+      logout({ redirect: false });
+      return false;
+    }
 
     if (!response.ok) {
       logout({ redirect: false });
@@ -136,6 +158,10 @@
   function redirectIfLoggedIn(redirectTo) {
     if (getAccessToken() || getRefreshToken()) {
       const currentUser = getCurrentUser();
+      if (!currentUser) {
+        return;
+      }
+
       const role = String(currentUser?.role || "").trim().toLowerCase();
 
       if (!redirectTo && role === "psychologist" && currentUser?.is_psychologist_verified) {

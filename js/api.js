@@ -1,4 +1,8 @@
 (function () {
+  const API_BASE_URL = window.SafetalkConfig?.API_BASE_URL || window.SafetalkAuth.API_BASE_URL;
+  const DEFAULT_TIMEOUT_MS = window.SafetalkConfig?.DEFAULT_TIMEOUT_MS || 30000;
+  const AUTH_ME_TIMEOUT_MS = window.SafetalkConfig?.AUTH_ME_TIMEOUT_MS || 20000;
+
   function readErrorMessage(payload) {
     if (!payload) {
       return "Something went wrong. Please try again.";
@@ -26,6 +30,38 @@
     return "Something went wrong. Please try again.";
   }
 
+  function createTimeoutError(timeoutMs) {
+    const seconds = Math.round(timeoutMs / 1000);
+    return new Error(`SafeTalk is starting up. This may take a moment. Please try again in ${seconds} seconds.`);
+  }
+
+  function createNetworkError(error) {
+    if (error.name === "AbortError") {
+      return createTimeoutError(error.timeoutMs || DEFAULT_TIMEOUT_MS);
+    }
+
+    return new Error("Unable to connect to SafeTalk. Check your connection and try again.");
+  }
+
+  async function fetchWithTimeout(url, options, timeoutMs) {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => {
+      controller.abort();
+    }, timeoutMs);
+
+    try {
+      return await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+    } catch (error) {
+      error.timeoutMs = timeoutMs;
+      throw createNetworkError(error);
+    } finally {
+      window.clearTimeout(timeoutId);
+    }
+  }
+
   async function parseResponse(response) {
     const contentType = response.headers.get("content-type") || "";
 
@@ -41,6 +77,7 @@
   async function request(path, options) {
     const requestOptions = options || {};
     const requiresAuth = requestOptions.requiresAuth !== false;
+    const timeoutMs = requestOptions.timeoutMs || DEFAULT_TIMEOUT_MS;
     const headers = {
       ...(requestOptions.headers || {}),
     };
@@ -54,7 +91,7 @@
         ? window.SafetalkAuth.getAuthHeaders(headers)
         : headers;
 
-      return fetch(`${window.SafetalkAuth.API_BASE_URL}${path}`, {
+      return fetchWithTimeout(`${API_BASE_URL}${path}`, {
         method: requestOptions.method || "GET",
         headers: finalHeaders,
         body: requestOptions.body instanceof FormData
@@ -62,7 +99,7 @@
           : requestOptions.body
             ? JSON.stringify(requestOptions.body)
             : undefined,
-      });
+      }, timeoutMs);
     };
 
     let response = await makeFetch();
@@ -106,6 +143,7 @@
     return request("/api/auth/login/", {
       method: "POST",
       requiresAuth: false,
+      timeoutMs: 30000,
       body: payload,
     });
   }
@@ -119,7 +157,9 @@
   }
 
   async function getMe() {
-    return request("/api/auth/me/");
+    return request("/api/auth/me/", {
+      timeoutMs: AUTH_ME_TIMEOUT_MS,
+    });
   }
 
   // Backend psychologist/session/chat endpoints

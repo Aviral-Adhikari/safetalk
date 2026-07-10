@@ -10,11 +10,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
 
   let selectedMode = params.get("mode") === "psychologist" ? "psychologist" : "client";
+  let isSubmitting = false;
+  let slowRequestTimer = null;
 
   function showMessage(text, type) {
     messageBox.textContent = text;
     messageBox.classList.remove("is-hidden", "is-error", "is-success");
     messageBox.classList.add(type === "success" ? "is-success" : "is-error");
+  }
+
+  function normalizeLoginError(error) {
+    const message = String(error?.message || "").trim();
+    const lowerMessage = message.toLowerCase();
+
+    if (lowerMessage.includes("no active account") || lowerMessage.includes("credentials")) {
+      return "Email/username or password is incorrect.";
+    }
+
+    if (lowerMessage.includes("starting up") || lowerMessage.includes("try again in")) {
+      return "SafeTalk is starting up. This may take a moment. Please try again.";
+    }
+
+    if (lowerMessage.includes("unable to connect")) {
+      return "Unable to connect to SafeTalk. Check your connection and try again.";
+    }
+
+    if (lowerMessage.includes("server error") || lowerMessage.includes("html")) {
+      return "SafeTalk could not complete the login request.";
+    }
+
+    return message || "SafeTalk could not complete the login request.";
+  }
+
+  function setLoading(isLoading, label) {
+    submitButton.disabled = isLoading;
+    submitButton.toggleAttribute("aria-busy", isLoading);
+
+    if (isLoading) {
+      submitButton.dataset.originalText = submitButton.textContent;
+      submitButton.innerHTML = `<span class="btn-spinner" aria-hidden="true"></span><span>${label}</span>`;
+      return;
+    }
+
+    submitButton.textContent = submitButton.dataset.originalText || submitButton.textContent;
+    delete submitButton.dataset.originalText;
   }
 
   function setMode(mode) {
@@ -55,14 +94,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    submitButton.disabled = true;
-    submitButton.setAttribute("aria-busy", "true");
+    if (isSubmitting) {
+      return;
+    }
+
+    isSubmitting = true;
+    setLoading(true, "Signing in...");
+    showMessage("Signing you in...", "success");
+    slowRequestTimer = window.setTimeout(() => {
+      showMessage("SafeTalk is starting up. Please wait a moment...", "success");
+    }, 6000);
 
     try {
       const tokens = await window.SafetalkApi.login({
         username: document.getElementById("username").value.trim(),
         password: document.getElementById("password").value,
       });
+
+      if (!tokens?.access || !tokens?.refresh) {
+        throw new Error("SafeTalk could not complete the login request.");
+      }
 
       window.SafetalkAuth.clearSessionContext();
       window.SafetalkAuth.setTokens(tokens.access, tokens.refresh);
@@ -100,10 +151,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       window.location.href = "dashboard.html";
     } catch (error) {
-      showMessage(error.message, "error");
+      window.SafetalkAuth.clearTokens();
+      window.SafetalkAuth.clearCurrentUser();
+      showMessage(normalizeLoginError(error), "error");
     } finally {
-      submitButton.disabled = false;
-      submitButton.removeAttribute("aria-busy");
+      if (slowRequestTimer) {
+        window.clearTimeout(slowRequestTimer);
+        slowRequestTimer = null;
+      }
+
+      isSubmitting = false;
+      setLoading(false);
     }
   });
 });
