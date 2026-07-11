@@ -1,36 +1,17 @@
-from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = "Create or reset the Safetalk admin superuser."
+    help = (
+        "Deprecated alias for create_initial_superuser. "
+        "Uses DJANGO_SUPERUSER_* environment variables."
+    )
 
     def handle(self, *args, **options):
-        User = get_user_model()
-        defaults = {
-            "email": "aviral.adhikari05@gmail.com",
-            "is_staff": True,
-            "is_superuser": True,
-            "is_active": True,
-        }
-
-        user, created = User.objects.get_or_create(
-            username="aviral",
-            defaults=defaults,
-        )
-
-        if not created:
-            user.email = "aviral.adhikari05@gmail.com"
-            user.is_staff = True
-            user.is_superuser = True
-            user.is_active = True
-
-        user.set_password("123@Pass@")
-        user.save()
-
-        action = "created" if created else "updated"
         self.stdout.write(
-            self.style.SUCCESS(
-                f"Admin user {action} successfully for username='aviral'."
+            self.style.WARNING(
+                "create_admin is deprecated. Use create_initial_superuser instead."
             )
         )
+        call_command("create_initial_superuser")
